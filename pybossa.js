@@ -1,4 +1,4 @@
-// PyBossa.JS library
+// pybossa.js library
 // Copyright (C) 2012 Daniel Lombraña González
 // 
 // This program is free software: you can redistribute it and/or modify
