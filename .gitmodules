@@ -1,3 +1,9 @@
 [submodule "tests/qunit"]
 	path = tests/qunit
 	url = git://github.com/jquery/qunit.git
+[submodule "tests/sinon.js"]
+	path = tests/sinon.js
+	url = https://github.com/cjohansen/Sinon.JS
+[submodule "tests/sinon-qunit"]
+	path = tests/sinon-qunit
+	url = https://github.com/cjohansen/sinon-qunit.git
