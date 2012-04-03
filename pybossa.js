@@ -34,7 +34,7 @@
             } );
  }
 
- function getTask( app ) {
+ function getTaskRun( app ) {
      return $.ajax({
             url: '/api/app/' + app.id + '/newtask',
             datatype: 'json'
@@ -45,36 +45,47 @@
              });
  }
 
+ function getTask( taskid, answer ) {
+     return $.ajax({
+            url: '/api/task/' + taskid,
+            datatype: 'json'
+             })
+            .pipe( function( data ) {
+                    tmp = data;
+                    tmp.answer = answer;
+                    return tmp;
+             });
+ }
+
+ function createTaskRun( data ) {
+     taskrun = {};
+     taskrun = {
+        'app_id': data.app_id,
+        'task_id': data.id,
+        'info': data.answer
+        };
+
+     taskrun = JSON.stringify(taskrun);
+
+     return $.ajax({
+            type: 'POST',
+            url: '/api/taskrun',
+            dataType: 'json',
+            contentType: 'application/json',
+            data: taskrun
+             })
+            .pipe( function( data ) {
+                    return data;
+             });
+ }
+
  // Public methods
  pybossa.newTask = function ( appname ) {
-     return getApp(appname).pipe(getTask);
+     return getApp(appname).pipe(getTaskRun);
  }
 
  pybossa.saveTask = function ( taskid, answer ) {
-     taskrun = {};
-     task = $.ajax({
-                url: '/api/task/' + taskid,
-                datatype: 'json'
-            });
-
-     task.done( function( t ) {
-             taskrun = {
-                'created': t.create_time,
-                'app_id': t.app_id,
-                'task_id': t.id,
-                'info': answer
-                };
-
-             taskrun = JSON.stringify(taskrun);
-             jqxhr = $.ajax({
-                    type: 'POST',
-                    dataType: 'json',
-                    url: '/api/taskrun', 
-                    data: taskrun,
-                    contentType: 'application/json'
-                    })
-                    .done( function(data) {console.log("done!");} );
-             });
+     return getTask( taskid, answer ).pipe(createTaskRun);
  }
 
 } ( window.pybossa = window.pybossa || {}, jQuery ));
