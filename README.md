@@ -15,4 +15,5 @@ If you want to learn how to use the library, please, check the two demo applicat
 * [FlickrPerson for PyBossa](https://github.com/PyBossa/app-flickrperson) [[doc]](http://app-flickrperson.rtfd.org)
 * [Urban Parks for PyBossa](https://github.com/PyBossa/app-geocoding) [[doc]](http://app-geocoding.rtfd.org)
 
+If you want more details, check the [documentation](http://pybossajs.rtfd.org).
 
