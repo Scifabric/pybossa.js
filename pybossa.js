@@ -16,11 +16,12 @@
 
 
 (function( pybossa, $, undefined ) {
+ var url = '/api';
 
  // Private methods 
  function getApp(appname){
     return $.ajax({
-        url: '/api/app',
+        url: url + '/app',
         datatype:'json'
         })
         .pipe( function( data ) {
@@ -36,7 +37,7 @@
 
  function getTaskRun( app ) {
      return $.ajax({
-            url: '/api/app/' + app.id + '/newtask',
+            url: url + '/app/' + app.id + '/newtask',
             datatype: 'json'
              })
             .pipe( function( data ) {
@@ -47,7 +48,7 @@
 
  function getTask( taskid, answer ) {
      return $.ajax({
-            url: '/api/task/' + taskid,
+            url: url + '/task/' + taskid,
             datatype: 'json'
              })
             .pipe( function( data ) {
@@ -69,7 +70,7 @@
 
      return $.ajax({
             type: 'POST',
-            url: '/api/taskrun',
+            url: url + '/taskrun',
             dataType: 'json',
             contentType: 'application/json',
             data: taskrun
@@ -80,11 +81,17 @@
  }
 
  // Public methods
- pybossa.newTask = function ( appname ) {
+ pybossa.newTask = function ( appname, endpoint ) {
+     if (endpoint != undefined) {
+         url = endpoint + '/api';
+     }
      return getApp(appname).pipe(getTaskRun);
  }
 
- pybossa.saveTask = function ( taskid, answer ) {
+ pybossa.saveTask = function ( taskid, answer, endpoint ) {
+     if (endpoint != undefined) {
+         url = endpoint + '/api';
+     }
      return getTask( taskid, answer ).pipe(createTaskRun);
  }
 
