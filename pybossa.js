@@ -22,16 +22,11 @@
  function getApp(appname){
     return $.ajax({
         url: url + '/app',
+        data: 'short_name='+appname,
         datatype:'json'
         })
         .pipe( function( data ) {
-            $.each(data, function(){
-                if (this.short_name == appname) {
-                    tmp = this;
-                    return false;
-                }
-            });
-            return tmp;
+            return data[0];
             } );
  }
 

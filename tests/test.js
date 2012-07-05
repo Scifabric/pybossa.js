@@ -5,15 +5,13 @@ test('should get a new task for the "slug" application from the server', functio
         var server = this.sandbox.useFakeServer();
 
         // Two sample applications are created
-        app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}, 
-               {"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug2", "created": "2012-04-02T11:41:24.400338", "owner_id": 2, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 2, "name": "Application Name 2"}
-        ];
+        app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(app);
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/app",
+            "GET", "/api/app?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -39,9 +37,6 @@ test('should get a new task for the "slug" application from the server', functio
         // Trigger the server endpoints
         server.respond();
         });
-
-
-
 
 module("pybossa.saveTask() method");
 
@@ -89,15 +84,13 @@ test('should get a new task for the "slug" application from a server endpoint di
         var server = this.sandbox.useFakeServer();
 
         // Two sample applications are created
-        app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}, 
-               {"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug2", "created": "2012-04-02T11:41:24.400338", "owner_id": 2, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 2, "name": "Application Name 2"}
-        ];
+        app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(app);
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app",
+            "GET", "/pybossa/api/app?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
