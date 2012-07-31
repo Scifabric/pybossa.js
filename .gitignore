@@ -9,5 +9,5 @@ doc/_build
 epio.ini
 .epio-app
 .epioignore
-
+*.un~
 .DS_Store
