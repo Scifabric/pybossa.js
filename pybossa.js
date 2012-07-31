@@ -75,9 +75,9 @@
              });
  }
 
- function getCurrentTaskId() {
-    pathArray = window.location.pathname.split('/');
-    if (window.location.pathname.indexOf('/task/')!=-1) {
+ function getCurrentTaskId(url) {
+    pathArray = url.split('/');
+    if (url.indexOf('/task/')!=-1) {
         var l = pathArray.length;
         var i = 0;
         for (i=0;i<l;i++) {
@@ -104,8 +104,13 @@
      return getTask( taskid, answer ).pipe(createTaskRun);
  };
 
- pybossa.getCurrentTaskId = function () {
-      return getCurrentTaskId();
+ pybossa.getCurrentTaskId = function ( url ) {
+     if (url !== undefined) {
+         return getCurrentTaskId(url);
+     }
+     else {
+        return getCurrentTaskId(window.location.pathname);
+     }
  };
 
 } ( window.pybossa = window.pybossa || {}, jQuery ));

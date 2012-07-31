@@ -157,3 +157,16 @@ test('should save a task for the "slug" application in a server endpoint differe
         server.respond();
        });
 
+module("pybossa.getCurrentTaskId() method");
+
+test('should return the TaskId from the URL', function() {
+        url = "http://pybossa.com/app/flickrperson/task/1";
+        var res = pybossa.getCurrentTaskId(url);
+        equal("1" , res, "The returned task.id is the same of the URL");
+       });
+
+test('should return false as URL does not have the task slug', function() {
+        url = "http://pybossa.com/app/flickrperson/newtask";
+        var res = pybossa.getCurrentTaskId(url);
+        equal(false , res, "The URL does not have a task");
+       });
