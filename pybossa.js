@@ -1,16 +1,16 @@
 // pybossa.js library
 // Copyright (C) 2012 Daniel Lombraña González
-// 
+//
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
 // the Free Software Foundation, either version 3 of the License, or
 // (at your option) any later version.
-// 
+//
 // This program is distributed in the hope that it will be useful,
 // but WITHOUT ANY WARRANTY; without even the implied warranty of
 // MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 // GNU General Public License for more details.
-// 
+//
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
@@ -18,7 +18,7 @@
 (function( pybossa, $, undefined ) {
  var url = '/api';
 
- // Private methods 
+ // Private methods
  function getApp(appname){
     return $.ajax({
         url: url + '/app',
@@ -75,19 +75,36 @@
              });
  }
 
+ function getCurrentTaskId() {
+    pathArray = window.location.pathname.split('/');
+    if (window.location.pathname.indexOf('/task/')!=-1) {
+        var l = pathArray.length;
+        var i = 0;
+        for (i=0;i<l;i++) {
+            if (pathArray[i]=='task') {
+                return pathArray[i+1];
+            }
+        }
+    }
+ }
+
  // Public methods
  pybossa.newTask = function ( appname, endpoint ) {
-     if (endpoint != undefined) {
+     if (endpoint !== undefined) {
          url = endpoint + '/api';
      }
      return getApp(appname).pipe(getTaskRun);
- }
+ };
 
  pybossa.saveTask = function ( taskid, answer, endpoint ) {
-     if (endpoint != undefined) {
+     if (endpoint !== undefined) {
          url = endpoint + '/api';
      }
      return getTask( taskid, answer ).pipe(createTaskRun);
- }
+ };
+
+ pybossa.getCurrentTaskId = function () {
+      return getCurrentTaskId();
+ };
 
 } ( window.pybossa = window.pybossa || {}, jQuery ));
