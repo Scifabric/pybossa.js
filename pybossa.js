@@ -23,7 +23,7 @@
     return $.ajax({
         url: url + '/app',
         data: 'short_name='+appname,
-        datatype:'json'
+        dataType:'json'
         })
         .pipe( function( data ) {
             return data[0];
@@ -33,7 +33,7 @@
  function getTaskRun( app ) {
      return $.ajax({
             url: url + '/app/' + app.id + '/newtask',
-            datatype: 'json'
+            dataType: 'json'
              })
             .pipe( function( data ) {
                     taskrun = { question: app.description, task: data};
@@ -44,7 +44,7 @@
  function getTask( taskid, answer ) {
      return $.ajax({
             url: url + '/task/' + taskid,
-            datatype: 'json'
+            dataType: 'json'
              })
             .pipe( function( data ) {
                     tmp = data;
