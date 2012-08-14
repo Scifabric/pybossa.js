@@ -99,6 +99,39 @@ object can be easily parsed. As you can see, PyBossa.JS gets the application ID
 and gets one task for the application returning an object with all the required
 data to load into the presenter.
 
+Getting the Task ID from the URL
+================================
+
+PyBossa supports different endpoints for every application task::
+
+    http://domain.com/app/slug/task/id
+
+This is basically a new way of accessing tasks provided by PyBossa, but that
+can be integrated within your application to request and load a new task data
+based on the endpoint.
+
+Your application can request a new task to PyBossa as before::
+
+    pybossa.newTask( "flickrperson" ).done(
+        function( data ) {
+            ....
+        }
+    );
+
+Remember that **data** contains the task.id, so once you get the task.id to
+load, you can actually redirect the application to the specific task URL, or
+load the data directly from the template. If you decide to redirect the
+application to the specific task URL, then, PyBossa.JS provides a method that
+will allow you to check if you have to request a newTask in your presenter or
+just get the input data from the given task::
+
+    pybossa.getCurrentTaskId( url )
+
+Where url will be the **window.location.pathname** variable or in other words
+the full URL of the user web browser that he is accessing in that moment. This
+method will allow you to detect when the user is accessing directly a task or
+requesting a new one, so you can in your web application decide what to do.
+
 Saving the answer of the volunteer
 ==================================
 
@@ -123,5 +156,39 @@ answer for the task. All the data is stored in the PyBossa DB, and you can see
 the results checking the API endpoint::
 
     http://PYBOSSA-SERVER/api/taskrun
+
+Getting the user progress of the volunteer
+==========================================
+
+While getting and saving tasks are important methods, showing the user his
+progress is also important. The following method gets the number of available
+tasks that the user can do, and how many of them he has completed::
+
+    pybossa.userProgress( appname [,url] )
+
+This method gives you the possibility of specifying a different url if your
+PyBossa server is not in the root of your website. 
+
+The method will return a JSON object with the following keywords::
+
+  { 'done': 10,
+    'total: 100
+  }
+
+In this example, the user can do 100 tasks for the application and he has
+contributed actually 10 of them. This means that the user has completed the 10%
+of available tasks for him.
+
+This method can be used like this in your web application::
+
+    pybossa.userProgress( 'flickrperson' ).done(function(data){
+        var pct = ((data.done*100)/data.total);
+        // Set the percentage of the progress bar:
+        $("#progressbar").css("width", pct.toString() + "%");
+        // or load the number of tasks in words
+        $("#stats").text("You have completed " + data.done + " of " + data.total + " available tasks!");
+        // or let the user know the remaining number of tasks
+        $("#stats).text("Remaining tasks for you: " + (data.total - data.done));
+    });
 
 
