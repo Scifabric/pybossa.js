@@ -89,6 +89,13 @@
     return false;
  }
 
+ function userProgress( appname ) {
+     return $.ajax({
+         url: url + '/app/' + appname + '/userprogress',
+         dataType: 'json',
+     });
+ }
+
  // Public methods
  pybossa.newTask = function ( appname, endpoint ) {
      if (endpoint !== undefined) {
@@ -111,6 +118,13 @@
      else {
         return getCurrentTaskId(window.location.pathname);
      }
+ };
+
+ pybossa.userProgress = function ( appname, url) {
+     if (url !== undefined) {
+         url = url + '/api';
+     }
+     return userProgress( appname );
  };
 
 } ( window.pybossa = window.pybossa || {}, jQuery ));

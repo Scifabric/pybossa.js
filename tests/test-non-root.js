@@ -1,5 +1,5 @@
-module("pybossa.newTask() with PyBossa served from a root URL method");
-test('should get a new task for the "slug" application from the server', function() {
+module("pybossa.newTask(endpoint=/pybossa/) method");
+test('should get a new task for the "slug" application from a server endpoint different from root', function() {
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
 
@@ -10,7 +10,7 @@ test('should get a new task for the "slug" application from the server', functio
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/app?short_name=slug",
+            "GET", "/pybossa/api/app?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -22,13 +22,13 @@ test('should get a new task for the "slug" application from the server', functio
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/app/1/newtask",
+            "GET", "/pybossa/api/app/1/newtask",
             [200, { "Content-type": "application/json" },
             tmp]
             );
 
         // Test the method newTask( appname );
-        pybossa.newTask( "slug" ).done( function( data ) {
+        pybossa.newTask( "slug", "/pybossa" ).done( function( data ) {
                 equal( data.question, app[0].description, "The obtained task belongs to the Slug application (id: 1)");
                 equal( data.task[0].id, task[0].id, "The TaskRun has been created using the right Task (id: 1)");
                 });
@@ -37,9 +37,10 @@ test('should get a new task for the "slug" application from the server', functio
         server.respond();
         });
 
-module("pybossa.saveTask() method");
 
-test('should save a task for the "slug" application in the server', function() {
+module("pybossa.saveTask(endpoint=/pybossa/) method");
+
+test('should save a task for the "slug" application in a server endpoint different from root', function() {
 
         var server = this.sandbox.useFakeServer();
 
@@ -50,7 +51,7 @@ test('should save a task for the "slug" application in the server', function() {
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/task/1",
+            "GET", "/pybossa/api/task/1",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -61,7 +62,7 @@ test('should save a task for the "slug" application in the server', function() {
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "POST", "/api/taskrun",
+            "POST", "/pybossa/api/taskrun",
             [200, { "Content-type": "application/json" },
             tmp]
             );
@@ -69,28 +70,14 @@ test('should save a task for the "slug" application in the server', function() {
         // Test the method submitTask( taskid, answer );
         taskid = 1;
         ans = taskrun[0].info;
-        pybossa.saveTask( taskid, ans ).done( function( data ) {
+        pybossa.saveTask( taskid, ans, "/pybossa" ).done( function( data ) {
                 equal( data.info.answer, taskrun[0].info.answer, "The obtained task belongs to the Slug application (id: 1)");
                 });
 
         server.respond();
        });
 
-module("pybossa.getCurrentTaskId() method");
-
-test('should return the TaskId from the URL', function() {
-        url = "http://pybossa.com/app/flickrperson/task/1";
-        var res = pybossa.getCurrentTaskId(url);
-        equal("1" , res, "The returned task.id is the same of the URL");
-       });
-
-test('should return false as URL does not have the task slug', function() {
-        url = "http://pybossa.com/app/flickrperson/newtask";
-        var res = pybossa.getCurrentTaskId(url);
-        equal(false , res, "The URL does not have a task");
-       });
-
-module("pybossa.userProgress( appname ) with PyBossa served from a root URL method");
+module("pybossa.userProgress(endpoint=/pybossa/) with PyBossa served from a non-root URL method");
 test('should get the userprogress using the "slug" application from the server', function() {
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
@@ -101,13 +88,13 @@ test('should get the userprogress using the "slug" application from the server',
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/app/slug/userprogress",
+            "GET", "/pybossa/api/app/slug/userprogress",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
 
         // Test the method newTask( appname );
-        pybossa.userProgress( "slug" ).done( function( data ) {
+        pybossa.userProgress( "slug", "/pybossa" ).done( function( data ) {
                 equal( data.total, 100, "The total number of tasks is correct");
                 equal( data.done, 10, "The done number of tasks is correct");
                 });
@@ -115,3 +102,4 @@ test('should get the userprogress using the "slug" application from the server',
         // Trigger the server endpoints
         server.respond();
         });
+
