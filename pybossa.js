@@ -120,9 +120,9 @@
      }
  };
 
- pybossa.userProgress = function ( appname, url) {
-     if (url !== undefined) {
-         url = url + '/api';
+ pybossa.userProgress = function ( appname, endpoint) {
+     if (endpoint !== undefined) {
+         url = endpoint + '/api';
      }
      return userProgress( appname );
  };
