@@ -96,6 +96,58 @@
      });
  }
 
+ // fallback for user defined action
+ function __taskLoaded (task, deferred) {
+     deferred.resolve(task);
+ }
+ 
+ function taskLoaded (userFunc) {
+
+     this.__taskLoaded = userFunc;
+ }
+ 
+ function presentTask (userFunc) {
+     this.__presentTask = userFunc;
+ }
+
+ function run ( appname ) {
+     var me = this;
+     $.ajax({
+         url: url + '/app',
+         data: 'short_name=' + appname,
+         dataType:'json'
+         }).done(function(app) {
+             app = app[0];
+             function getTask(offset) {
+                 offset = offset || 0;
+                 var def = $.Deferred();
+                 $.ajax({
+                     url: url + '/app/' + app.id + '/newtask',
+                     data: 'offset=' + offset,
+                     dataType: 'json'
+                 }).done(function(task) {
+                     var udef = $.Deferred();
+                     me.__taskLoaded(task, udef);
+                     udef.done(function(task) {
+                         def.resolve(task);
+                     });
+                 });
+                 return def.promise();
+             }
+
+             function loop(task, answer) {
+                 var nextLoaded = getTask(1),
+                     taskSolved = $.Deferred();
+
+                 history.pushState ({}, "Title", '/app/' + appname + '/task/' + task.id);
+                 me.__presentTask(task, taskSolved);
+                 $.when(nextLoaded, taskSolved).done(loop);
+             }
+             getTask().done(loop);
+     });
+ }
+
+
  // Public methods
  pybossa.newTask = function ( appname, endpoint ) {
      if (endpoint !== undefined) {
@@ -126,5 +178,20 @@
      }
      return userProgress( appname );
  };
+
+ pybossa.run = function ( appname, endpoint ) {
+     if (endpoint !== undefined) {
+         url = endpoint + '/api';
+     }
+     return run( appname );
+ }
+
+ pybossa.taskLoaded = function ( userFunc ) {
+     return taskLoaded( userFunc );
+ }
+
+ pybossa.presentTask = function ( userFunc ) {
+     return presentTask( userFunc );
+ }
 
 } ( window.pybossa = window.pybossa || {}, jQuery ));
