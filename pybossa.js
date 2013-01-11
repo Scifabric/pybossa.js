@@ -139,7 +139,9 @@
                  var nextLoaded = getTask(1),
                      taskSolved = $.Deferred();
 
-                 history.pushState ({}, "Title", '/app/' + appname + '/task/' + task.id);
+                 if (task) {
+                    history.pushState ({}, "Title", '/app/' + appname + '/task/' + task.id);
+                 }
                  me.__presentTask(task, taskSolved);
                  $.when(nextLoaded, taskSolved).done(loop);
              }
