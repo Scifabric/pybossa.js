@@ -182,4 +182,3 @@ test('should get a new task for the "slug" application from the server', functio
         server.respond();
         expect(4);
         });
-
