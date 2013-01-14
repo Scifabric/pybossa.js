@@ -28,7 +28,9 @@ test('should get a new task for the "slug" application from a server endpoint di
             );
 
         // Test the method newTask( appname );
-        pybossa.newTask( "slug", "/pybossa" ).done( function( data ) {
+        // Set the endpoint
+        pybossa.setEndpoint( "/pybossa" );
+        pybossa.newTask( "slug" ).done( function( data ) {
                 equal( data.question, app[0].description, "The obtained task belongs to the Slug application (id: 1)");
                 equal( data.task[0].id, task[0].id, "The TaskRun has been created using the right Task (id: 1)");
                 });
@@ -70,7 +72,10 @@ test('should save a task for the "slug" application in a server endpoint differe
         // Test the method submitTask( taskid, answer );
         taskid = 1;
         ans = taskrun[0].info;
-        pybossa.saveTask( taskid, ans, "/pybossa" ).done( function( data ) {
+
+        // Set the endpoint
+        pybossa.setEndpoint( "/pybossa" );
+        pybossa.saveTask( taskid, ans ).done( function( data ) {
                 equal( data.info.answer, taskrun[0].info.answer, "The obtained task belongs to the Slug application (id: 1)");
                 });
 
@@ -94,7 +99,9 @@ test('should get the userprogress using the "slug" application from the server',
             );
 
         // Test the method newTask( appname );
-        pybossa.userProgress( "slug", "/pybossa" ).done( function( data ) {
+        // Set the endpoint
+        pybossa.setEndpoint( "/pybossa" );
+        pybossa.userProgress( "slug" ).done( function( data ) {
                 equal( data.total, 100, "The total number of tasks is correct");
                 equal( data.done, 10, "The done number of tasks is correct");
                 });
@@ -144,6 +151,9 @@ test('should get a new task for the "slug" application from the server', functio
             tmp2]
             );
 
+        // Set the endpoint
+        pybossa.setEndpoint( "/pybossa" );
+
         // Test the method newTask( appname );
         var answerId = 1;
         pybossa.taskLoaded(function(task, deferred){
@@ -163,7 +173,7 @@ test('should get a new task for the "slug" application from the server', functio
             }
         });
 
-        pybossa.run('slug', "/pybossa");
+        pybossa.run('slug');
 
         // Trigger the server endpoints
         server.respond();
