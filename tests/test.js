@@ -28,6 +28,7 @@ test('should get a new task for the "slug" application from the server', functio
             );
 
         // Test the method newTask( appname );
+        pybossa.url = "";
         pybossa.newTask( "slug" ).done( function( data ) {
                 equal( data.question, app[0].description, "The obtained task belongs to the Slug application (id: 1)");
                 equal( data.task[0].id, task[0].id, "The TaskRun has been created using the right Task (id: 1)");

@@ -151,17 +151,11 @@
 
 
  // Public methods
- pybossa.newTask = function ( appname, endpoint ) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
-     }
+ pybossa.newTask = function ( appname ) {
      return getApp(appname).pipe(getTaskRun);
  };
 
- pybossa.saveTask = function ( taskid, answer, endpoint ) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
-     }
+ pybossa.saveTask = function ( taskid, answer ) {
      return getTask( taskid, answer ).pipe(createTaskRun);
  };
 
@@ -174,17 +168,11 @@
      }
  };
 
- pybossa.userProgress = function ( appname, endpoint) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
-     }
+ pybossa.userProgress = function ( appname ) {
      return userProgress( appname );
  };
 
- pybossa.run = function ( appname, endpoint ) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
-     }
+ pybossa.run = function ( appname ) {
      return run( appname );
  }
 
@@ -194,6 +182,11 @@
 
  pybossa.presentTask = function ( userFunc ) {
      return presentTask( userFunc );
+ }
+
+ pybossa.setEndpoint = function ( endpoint ) {
+     url = endpoint + '/api';
+     return url;
  }
 
 } ( window.pybossa = window.pybossa || {}, jQuery ));
