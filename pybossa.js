@@ -151,16 +151,16 @@
 
 
  // Public methods
- pybossa.newTask = function ( appname, endpoint ) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
+ pybossa.newTask = function ( appname ) {
+     if (pybossa.url !== undefined) {
+         url = pybossa.url + '/api';
      }
      return getApp(appname).pipe(getTaskRun);
  };
 
- pybossa.saveTask = function ( taskid, answer, endpoint ) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
+ pybossa.saveTask = function ( taskid, answer ) {
+     if (pybossa.url !== undefined) {
+         url = pybossa.url + '/api';
      }
      return getTask( taskid, answer ).pipe(createTaskRun);
  };
@@ -174,16 +174,16 @@
      }
  };
 
- pybossa.userProgress = function ( appname, endpoint) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
+ pybossa.userProgress = function ( appname ) {
+     if (pybossa.url !== undefined) {
+         url = pybossa.url + '/api';
      }
      return userProgress( appname );
  };
 
- pybossa.run = function ( appname, endpoint ) {
-     if (endpoint !== undefined) {
-         url = endpoint + '/api';
+ pybossa.run = function ( appname ) {
+     if (pybossa.url !== undefined) {
+         url = pybossa.url + '/api';
      }
      return run( appname );
  }
