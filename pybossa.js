@@ -121,11 +121,22 @@
              function getTask(offset) {
                  offset = offset || 0;
                  var def = $.Deferred();
-                 $.ajax({
+                 var xhr = $.ajax({
                      url: url + '/app/' + app.id + '/newtask',
                      data: 'offset=' + offset,
                      dataType: 'json'
-                 }).done(function(task) {
+                 });
+                 if (window.history.length <= 1) {
+                    var taskId = getCurrentTaskId(window.location.pathname);
+                    if (taskId) {
+                        param =  '/task/' + taskId;
+                        var xhr = $.ajax({
+                            url: url + '/task/' + taskId,
+                            dataType: 'json'
+                        })
+                    }
+                 }
+                 xhr.done(function(task) {
                      var udef = $.Deferred();
                      me.__taskLoaded(task, udef);
                      udef.done(function(task) {
