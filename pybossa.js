@@ -150,7 +150,7 @@
                  var nextLoaded = getTask(1),
                      taskSolved = $.Deferred();
 
-                 if (task) {
+                 if (task.id) {
                     history.pushState ({}, "Title", '/app/' + appname + '/task/' + task.id);
                  }
                  me.__presentTask(task, taskSolved);
