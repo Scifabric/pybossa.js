@@ -6,8 +6,8 @@ The library is provided with the PyBossa server. However, the source code and
 unit tests for PyBossa.JS are included in a different repository and
 distributed as a git submodule for PyBossa.
 
-If you are creating a new PyBossa application, you will only have to include
-the PyBossa.JS library in the template file (check the two demo
+If you are creating a new PyBossa application, you will get the library loaded
+for you, so you only need to start using it (check the two demo
 applications)[https://github.com/PyBossa/]::
 
    <script src=/static/js/pybossa/pybossa.js>

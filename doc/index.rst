@@ -2,12 +2,12 @@
 Welcome to the PyBossa.js Documentation
 =======================================
 
-PyBossa.JS is an open source library for the `PyBossa <http://pybossa.rtfd.org>`_ 
+PyBossa.JS is an open source library for the `PyBossa <http://docs.pybossa.com>`_ 
 crowd-sourcing framework. PyBossa is designed to distribute tasks that require 
-human cognition, knowledge or intelligence (e.g. image classification, transcription, information location
-etc).
+human cognition, knowledge or intelligence (e.g. image classification, 
+transcription, information location etc).
 
-PyBossa.JS simplifies the access to the PyBossa API providing two public
+PyBossa.JS simplifies the access to the PyBossa API providing several public
 methods that will get and submit a task for a given application in PyBossa.
 
 User Guide
@@ -19,7 +19,7 @@ end-user such as:
   * Creators and managers of a specific PyBossa microtasking application:
     getting a task and saving the answer from the volunteers in the data base.
     
-We suggest starting by taking a quick look at the overview of the `PyBossa <http://pybossa.rtfd.org>`_
+We suggest starting by taking a quick look at the overview of the `PyBossa <http://docs.pybossa.com>`_
 system as this will introduce you to a few pieces of terminology and help you
 understand how things fit together.
 

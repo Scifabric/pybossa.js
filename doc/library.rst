@@ -8,7 +8,8 @@ application, and save the answer from the volunteer.
 Getting a task
 ==============
 
-In PyBossa every application is defined as a JSON object with several fields::
+In PyBossa every application is defined as a JSON object with several fields:
+.. code-block:: javascript
 
     {
         "info": {
@@ -31,7 +32,7 @@ represent the task to the volunteers, and for storing the answers of the
 volunteers of the tasks.
 
 Therefore, we can say that the **info** field does not have a specific format
-except for the applications, as every application need a task_presenter.
+except for the applications, as every application needs a task_presenter.
 
 PyBossa.JS uses the description field to get the question that will be shown to
 the volunteers in the presenter endpoint of the application. For example, in
@@ -68,127 +69,200 @@ The link to the Flickr page that publishes the photo and the direct link to the
 photo. Those two items will be used by the presenter to load the photo and
 create a link to the Flickr page.
 
-Therefore, if we want to get one task for the Flickr Person application, we will only
-need to write the following code in our application::
-
-    pybossa.newTask( "flickrperson" ).done(
-      function( data ) {
-        $("#question h1").text(data.question);
-        $("#task-id").text(data.task.id);
-        $("#photo-link").attr("href", data.task.info.link);
-        $("#photo").attr("src",data.task.info.url);
-      };
-    );
-
-pybossa.newTask( "shortname" ) will return the following object::
-
-    { 
-      "question": application.description,
-      "task": {
-                "id": value,
-                ...,
-                "info": {
-                         "url": "http...."
-                         "link": "http..."
-                        }
-            }
-    }
-
-Therefore, loading the task data into the HTML skeleton will be easy, as the
-object can be easily parsed. As you can see, PyBossa.JS gets the application ID
-and gets one task for the application returning an object with all the required
-data to load into the presenter.
-
-Getting the Task ID from the URL
+Presenting the Tasks to the user
 ================================
 
-PyBossa supports different endpoints for every application task::
+In order to present the tasks to the user, you have to create an HTML template.
+The template is the skeleton that will be used to load the data of the tasks:
+the question, the photos, user progress, and input fields & submit buttons 
+to solve the task. 
 
-    http://domain.com/app/slug/task/id
+Flickr Person uses a basic HTML skeleton and this library to load the data 
+of the tasks into the HTML template, and take actions based on the users's answers.
 
-This is basically a new way of accessing tasks provided by PyBossa, but that
-can be integrated within your application to request and load a new task data
-based on the endpoint.
+.. note::
+  When a task is submitted by an authenticated user, the task will save his
+  user_id. For anonymous users the submitted task will only have the user IP
+  address.
 
-Your application can request a new task to PyBossa as before::
 
-    pybossa.newTask( "flickrperson" ).done(
-        function( data ) {
-            ....
+1. Loading the Task data
+~~~~~~~~~~~~~~~~~~~~~~~~
+
+Every PyBossa application will have DOM skeleton where you will load the task data.
+
+PyBossa.JS provides two methods that have to
+been overridden with some logic, as each application will have a different
+needs:
+
+  * pybossa.taskLoaded(function(task, deferred){});
+  * pybossa.presentTask(function(task, deferred){});
+
+The **pybossa.taskLoaded** method will be in charge of adding new items to the
+JSON task object and resolve the deferred object once the data has been loaded 
+(i.e. when an image has been downloaded), so another task for the current user 
+can be pre-loaded. An example:
+
+.. code-block:: javascript
+
+    pybossa.taskLoaded(function(task, deferred) {
+        if ( !$.isEmptyObject(task) ) {
+            // load image from flickr
+            var img = $('<img />');
+            img.load(function() {
+                // continue as soon as the image is loaded
+                deferred.resolve(task);
+            });
+            img.attr('src', task.info.url_b).css('height', 460);
+            img.addClass('img-polaroid');
+            task.info.image = img;
         }
-    );
+        else {
+            deferred.resolve(task);
+        }
+    });
 
-Remember that **data** contains the task.id, so once you get the task.id to
-load, you can actually redirect the application to the specific task URL, or
-load the data directly from the template. If you decide to redirect the
-application to the specific task URL, then, PyBossa.JS provides a method that
-will allow you to check if you have to request a newTask in your presenter or
-just get the input data from the given task::
+Then **pybossa.presentTask** method will be called when a task has been loaded
+(previous method) from the PyBossa server:
 
-    pybossa.getCurrentTaskId( url )
+.. code-block:: javascript
 
-Where url will be the **window.location.pathname** variable or in other words
-the full URL of the user web browser that he is accessing in that moment. This
-method will allow you to detect when the user is accessing directly a task or
-requesting a new one, so you can in your web application decide what to do.
-
-Saving the answer of the volunteer
-==================================
-
-Saving the answer is very simple. PyBossa.JS exports the following public
-method to save the answer for a given task of a given application::
-
-    pybossa.saveTask( taskid, answer )
-
-Continuing with previous example, if you want to save the answer Yes for a Task
-where the photo has a human, you will only have to do the following::
-
-    pybossa.saveTask( taskid, { "answer": "yes" }).done(
-        function( data ) {
-        // Show some feedback for the user
-        // Request a new task
-        };
-    );
-
-The TaskId is usually saved in the DOM when you load the task (see previous
-section). Then, you only need to provide a JSON object that will have the
-answer for the task. All the data is stored in the PyBossa DB, and you can see
-the results checking the API endpoint::
-
-    http://PYBOSSA-SERVER/api/taskrun
-
-Getting the user progress of the volunteer
-==========================================
-
-While getting and saving tasks are important methods, showing the user his
-progress is also important. The following method gets the number of available
-tasks that the user can do, and how many of them he has completed::
-
-    pybossa.userProgress( appname [,url] )
-
-This method gives you the possibility of specifying a different url if your
-PyBossa server is not in the root of your website. 
-
-The method will return a JSON object with the following keywords::
-
-  { 'done': 10,
-    'total: 100
+  { question: application.description,
+    task: { 
+            id: value,
+            ...,
+            info: { 
+                    url_m: 
+                    link:
+                   } 
+          } 
   }
 
-In this example, the user can do 100 tasks for the application and he has
-contributed actually 10 of them. This means that the user has completed the 10%
-of available tasks for him.
 
-This method can be used like this in your web application::
+That JSON object will be accessible via the task object passed as an argument
+to the pybossa.presentTask method. First we will need to check that we are not
+getting an empty object, as it will mean that there are no more available tasks
+for the current user. In that case, we should hide the skeleton, and say thanks
+to the user as he has participated in all the tasks of the application.
 
-    pybossa.userProgress( 'flickrperson' ).done(function(data){
-        var pct = ((data.done*100)/data.total);
-        // Set the percentage of the progress bar:
-        $("#progressbar").css("width", pct.toString() + "%");
-        // or load the number of tasks in words
-        $("#stats").text("You have completed " + data.done + " of " + data.total + " available tasks!");
-        // or let the user know the remaining number of tasks
-        $("#stats).text("Remaining tasks for you: " + (data.total - data.done));
+If the task object is not empty, then we have task to load into the *skeleton*.
+
+The PyBossa.JS library treats the user input as an "async function". This is
+why the function gets a deferred object, as this object will be *resolved* when
+the user submits an answer. We use this approach to load in
+the background the next task for the user while the volunteer is solving the
+current one. Once the answer has been saved in the server, we resolve the
+deferred:
+
+.. code-block:: javascript
+
+    pybossa.presentTask(function(task, deferred) {
+        if ( !$.isEmptyObject(task) ) {
+            loadUserProgress();
+            $('#photo-link').html('').append(task.info.image);
+            $("#photo-link").attr("href", task.info.link);
+            $("#question").html(task.info.question);
+            $('#task-id').html(task.id);
+            $('.btn-answer').off('click').on('click', function(evt) {
+                var answer = $(evt.target).attr("value");
+                if (typeof answer != 'undefined') {
+                    //console.log(answer);
+                    pybossa.saveTask(task.id, answer).done(function() {
+                        deferred.resolve();
+                    });
+                    $("#loading").fadeIn(500);
+                    if ($("#disqus_thread").is(":visible")) {
+                        $('#disqus_thread').toggle();
+                        $('.btn-disqus').toggle();
+                    }
+                }
+                else {
+                    $("#error").show();
+                }
+            });
+            $("#loading").hide();
+        }
+        else {
+            $(".skeleton").hide();
+            $("#loading").hide();
+            $("#finish").fadeIn(500);
+        }
+    });
+
+It is important to note that in this method we bind the *on-click* action for
+the submit buttons (the user will click in one of them to submit an answer) 
+to call the above snippet:
+
+.. code-block:: javascript
+
+    $('.btn-answer').off('click').on('click', function(evt) {
+        var answer = $(evt.target).attr("value");
+        if (typeof answer != 'undefined') {
+            //console.log(answer);
+            pybossa.saveTask(task.id, answer).done(function() {
+                deferred.resolve();
+            });
+            $("#loading").fadeIn(500);
+            if ($("#disqus_thread").is(":visible")) {
+                $('#disqus_thread').toggle();
+                $('.btn-disqus').toggle();
+            }
+        }
+        else {
+            $("#error").show();
+        }
     });
 
 
+Finally, the pybossa.presentTask calls a method named
+**loadUserProgress**. This method is in charge of getting the user progress of
+the user and update the progress bar accordingly:
+
+.. code-block:: javascript
+
+    function loadUserProgress() {
+        pybossa.userProgress('flickrperson').done(function(data){
+            var pct = Math.round((data.done*100)/data.total);
+            $("#progress").css("width", pct.toString() +"%");
+            $("#progress").attr("title", pct.toString() + "% completed!");
+            $("#progress").tooltip({'placement': 'left'}); 
+            $("#total").text(data.total);
+            $("#done").text(data.done);
+        });
+    }
+
+You can update the code to only show the number of answers, or remove it
+completely, however the volunteers will benefit from this type of information
+as they will be able to know how many tasks they have to do, giving an idea of
+progress while the contribute to the project.
+
+Finally, we only need in our application to run the PyBossa application:
+
+.. code-block:: javascript
+
+    pybossa.run('slug-application-name')
+
+
+3. Saving the answer
+--------------------
+
+The *pybossa.saveTask* method saves an answer for a given task. In the
+previous section we show that in the pybossa.presentTask method the *task-id*
+can be obtained, as we will be passing the object to saveTask method.
+
+The method allows us to give a successful pop-up feedback for the user, so you  
+can use the following structure to warn the user and tell him that his answer
+has been successfully saved:
+
+.. code-block:: javascript
+
+  pybossa.saveTask( taskid, answer ).done(
+    function( data ) {
+        // Show the feedback div
+        $("#success").fadeIn(); 
+        // Fade out the pop-up after a 1000 miliseconds
+        setTimeout(function() { $("#success").fadeOut() }, 1000);
+    };
+  );
+
+We recommend to read the `PyBossa tutorial <http://docs.pybossa.com/en/latest/user/create-application-tutorial.html>`_ as we explain step by step how to create an application.
