@@ -159,19 +159,20 @@ test('should get a new task for the "slug" application from the server', functio
             );
 
         // Test the method newTask( appname );
-        var answerId = 1;
+        var answerId = 0;
         pybossa.taskLoaded(function(task, deferred){
                 //console.log(answerId);
                 console.log("Id of task: " + task[0].id);
+                console.log("AnswerID: " + answerId);
+                answerId += 1;
                 equal( task[0].app_id, 1, "The obtained task belongs to the Slug application (id: 1)");
-                equal( task[0].id, answerId, "The TaskRun has been created using the right Task (id: " + answerId + ")");
+                equal( task[0].id, answerId, "The TaskRun has been created using the wrong Task (id: " + answerId + ")");
                 deferred.resolve();
         });
 
         pybossa.presentTask(function(task, deferred){
             // pybossa.saveTask(task.id, answer) <- works
             console.log("Task presented!");
-            answerId += 1;
             if (task[0]) {
                 deferred.resolve();
             }
