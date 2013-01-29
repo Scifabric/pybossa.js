@@ -149,9 +149,17 @@
              function loop(task, answer) {
                  var nextLoaded = getTask(1),
                      taskSolved = $.Deferred();
-
                  if (task.id) {
-                    history.pushState ({}, "Title", '/app/' + appname + '/task/' + task.id);
+                   // note if working with pybossa.js locally and opening the
+                   // html page with a file:/// urls the call to
+                   // history.pushState will result in a (silent) security
+                   // exception (in chrome at least) - wrap in try/except to
+                   // avoid this
+                   try {
+                     history.pushState ({}, "Title", '/app/' + appname + '/task/' + task.id);
+                   } catch(e) {
+                     console.log(e);
+                   }
                  }
                  me.__presentTask(task, taskSolved);
                  $.when(nextLoaded, taskSolved).done(loop);
