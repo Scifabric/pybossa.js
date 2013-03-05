@@ -266,3 +266,20 @@ has been successfully saved:
   );
 
 We recommend to read the `PyBossa tutorial <http://docs.pybossa.com/en/latest/user/create-application-tutorial.html>`_ as we explain step by step how to create an application.
+
+4. Setting a different end point
+--------------------------------
+
+Sometimes the PyBossa server is not in the root of the domain, so you will find
+the server running for example here: http://server/pybossa
+
+In this case, you will need to change the API endpoint, otherwise PyBossa.JS
+will fail to load the task for your application. In order to set the right
+end point, you can use the following method:
+
+.. code-block:: javascript
+
+    pybossa.setEndpoint('http://server/pybossa');
+
+And then you can call the pybossa.run method as usual. The setEndpoint method
+will configure the right URL for using the API.

@@ -7,7 +7,7 @@ unit tests for PyBossa.JS are included in a different repository and
 distributed as a git submodule for PyBossa.
 
 If you are creating a new PyBossa application, you will get the library loaded
-for you, so you only need to start using it (check the two demo
+for you, so you only need to start using it (check the demo
 applications)[https://github.com/PyBossa/]::
 
    <script src=/static/js/pybossa/pybossa.js>
@@ -19,5 +19,3 @@ You can get the source code cloning/forking the repository::
 Or download the ZIP file from this URL::
 
   https://github.com/PyBossa/pybossa.js/zipball/master
-
-
