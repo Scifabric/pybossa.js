@@ -13,3 +13,15 @@ If you want to learn how to use the library, please, check the demo application 
 
 If you want more details, check the [documentation](http://pybossajs.rtfd.org).
 
+# Contributing to PyBossa.JS
+
+If you want to contribute to this library, please, read carefully the
+[Contribution Guidelines](CONTRIBUTING.md)
+
+# Copyright
+
+Copyright 2013 SF Isle of Man
+
+# License
+
+GPLv3 (see [COPYING file](COPYING))
