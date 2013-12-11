@@ -14,6 +14,14 @@
 // You should have received a copy of the GNU General Public License
 // along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+/* Bug workaround for IE when debugging toolbar is not open */
+if (typeof(console) == 'undefined') {
+  console = {
+    log: function () {},
+    warn: function () {},
+    error: function () {}
+  };
+}
 
 (function( pybossa, $, undefined ) {
     var url = '/';
@@ -93,7 +101,7 @@
     function userProgress( appname ) {
         return $.ajax({
             url: url + 'api/app/' + appname + '/userprogress',
-            dataType: 'json',
+            dataType: 'json'
         });
     }
 
