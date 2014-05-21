@@ -76,7 +76,7 @@ test('should save a task for the "slug" application in a server endpoint differe
         // Set the endpoint
         pybossa.setEndpoint( "/pybossa" );
         pybossa.saveTask( taskid, ans ).done( function( data ) {
-                equal( data.info.answer, taskrun[0].info.answer, "The obtained task belongs to the Slug application (id: 1)");
+                equal( data.info.answer, taskrun[0].info.answer, "The obtained task belongs to the Slug project (id: 1)");
                 });
 
         server.respond();

@@ -3,12 +3,12 @@ Using PyBossa.JS
 ================
 
 Once the library has been loaded, you will be able to get tasks for a specific
-application, and save the answer from the volunteer.
+project, and save the answer from the volunteer.
 
 Getting a task
 ==============
 
-In PyBossa every application is defined as a JSON object with several fields:
+In PyBossa every project is defined as a JSON object with several fields:
 .. code-block:: javascript
 
     {
@@ -17,29 +17,29 @@ In PyBossa every application is defined as a JSON object with several fields:
         },
         "time_limit": null,
         "description": "Question to ask to the volunteers",
-        "short_name": "Short name or SLUG for the application",
+        "short_name": "Short name or SLUG for the project",
         "created": "2012-04-04T11:11:43.335517",
         "owner_id": 1,
         [...]
         "hidden": 0,
         "id": 1,
-        "name": "Name of the application"
+        "name": "Name of the project"
     }
 
 The **info** field is widely used in PyBossa. This field is used as a content
-manager, where for example the applications add the HTML and JS code to
+manager, where for example the projects add the HTML and JS code to
 represent the task to the volunteers, and for storing the answers of the
 volunteers of the tasks.
 
 Therefore, we can say that the **info** field does not have a specific format
-except for the applications, as every application needs a task_presenter.
+except for the projects, as every project needs a task_presenter.
 
 PyBossa.JS uses the description field to get the question that will be shown to
-the volunteers in the presenter endpoint of the application. For example, in
-the `FlickrPerson demo application <http://app-flickrperson.rtfd.org>`_ the
+the volunteers in the presenter endpoint of the project. For example, in
+the `FlickrPerson demo project <http://app-flickrperson.rtfd.org>`_ the
 question is: Do you see a human in this photo? and that question has been
-stored in the application JSON object (check the source code of the
-application).
+stored in the project JSON object (check the source code of the
+project).
 
 The tasks in PyBossa have the following structure::
 
@@ -56,7 +56,7 @@ The tasks in PyBossa have the following structure::
 
 Again, we can see that every task has an **info** field, and that field is
 where there will be all the information that the volunteers may need to solve
-the problem. For instance, for the Flickr Person application, the task consist
+the problem. For instance, for the Flickr Person project, the task consist
 in answering if there is a human in a photo, so the info field has the
 following two elements::
 
@@ -89,10 +89,10 @@ of the tasks into the HTML template, and take actions based on the users's answe
 1. Loading the Task data
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Every PyBossa application will have DOM skeleton where you will load the task data.
+Every PyBossa project will have DOM skeleton where you will load the task data.
 
 PyBossa.JS provides two methods that have to
-been overridden with some logic, as each application will have a different
+been overridden with some logic, as each project will have a different
 needs:
 
   * pybossa.taskLoaded(function(task, deferred){});
@@ -143,7 +143,7 @@ That JSON object will be accessible via the task object passed as an argument
 to the pybossa.presentTask method. First we will need to check that we are not
 getting an empty object, as it will mean that there are no more available tasks
 for the current user. In that case, we should hide the skeleton, and say thanks
-to the user as he has participated in all the tasks of the application.
+to the user as he has participated in all the tasks of the project.
 
 If the task object is not empty, then we have task to load into the *skeleton*.
 
@@ -236,11 +236,11 @@ completely, however the volunteers will benefit from this type of information
 as they will be able to know how many tasks they have to do, giving an idea of
 progress while the contribute to the project.
 
-Finally, we only need in our application to run the PyBossa application:
+Finally, we only need in our application to run the PyBossa project:
 
 .. code-block:: javascript
 
-    pybossa.run('slug-application-name')
+    pybossa.run('slug-project-name')
 
 
 3. Saving the answer
@@ -265,7 +265,7 @@ has been successfully saved:
     };
   );
 
-We recommend to read the `PyBossa tutorial <http://docs.pybossa.com/en/latest/user/create-application-tutorial.html>`_ as we explain step by step how to create an application.
+We recommend to read the `PyBossa tutorial <http://docs.pybossa.com/en/latest/user/create-application-tutorial.html>`_ as we explain step by step how to create a project.
 
 4. Setting a different end point
 --------------------------------
@@ -274,7 +274,7 @@ Sometimes the PyBossa server is not in the root of the domain, so you will find
 the server running for example here: http://server/pybossa
 
 In this case, you will need to change the API endpoint, otherwise PyBossa.JS
-will fail to load the task for your application. In order to set the right
+will fail to load the task for your project. In order to set the right
 end point, you can use the following method:
 
 .. code-block:: javascript

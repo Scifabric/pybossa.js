@@ -8,7 +8,7 @@ human cognition, knowledge or intelligence (e.g. image classification,
 transcription, information location etc).
 
 PyBossa.JS simplifies the access to the PyBossa API providing several public
-methods that will get and submit a task for a given application in PyBossa.
+methods that will get and submit a task for a given project in PyBossa.
 
 User Guide
 ==========
@@ -16,7 +16,7 @@ User Guide
 This section covers how to use PyBossa.JS from the perspective of a PyBossa
 end-user such as:
 
-  * Creators and managers of a specific PyBossa microtasking application:
+  * Creators and managers of a specific PyBossa microtasking project:
     getting a task and saving the answer from the volunteers in the data base.
     
 We suggest starting by taking a quick look at the overview of the `PyBossa <http://docs.pybossa.com>`_
