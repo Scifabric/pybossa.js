@@ -1,9 +1,9 @@
 module("pybossa.newTask(endpoint=/pybossa/) method");
-test('should get a new task for the "slug" application from a server endpoint different from root', function() {
+test('should get a new task for the "slug" project from a server endpoint different from root', function() {
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
 
-        // Two sample applications are created
+        // Two sample projects are created
         app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(app);
@@ -15,7 +15,7 @@ test('should get a new task for the "slug" application from a server endpoint di
             tmp] 
             );
 
-        // One task for the application:
+        // One task for the project:
         var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "app_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
 
         var tmp = JSON.stringify(task);
@@ -31,7 +31,7 @@ test('should get a new task for the "slug" application from a server endpoint di
         // Set the endpoint
         pybossa.setEndpoint( "/pybossa" );
         pybossa.newTask( "slug" ).done( function( data ) {
-                equal( data.question, app[0].description, "The obtained task belongs to the Slug application (id: 1)");
+                equal( data.question, app[0].description, "The obtained task belongs to the Slug project (id: 1)");
                 equal( data.task[0].id, task[0].id, "The TaskRun has been created using the right Task (id: 1)");
                 });
 
@@ -42,11 +42,11 @@ test('should get a new task for the "slug" application from a server endpoint di
 
 module("pybossa.saveTask(endpoint=/pybossa/) method");
 
-test('should save a task for the "slug" application in a server endpoint different from root', function() {
+test('should save a task for the "slug" project in a server endpoint different from root', function() {
 
         var server = this.sandbox.useFakeServer();
 
-        // One task for the application:
+        // One task for the project:
         var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "app_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
 
         var tmp = JSON.stringify(task[0]);
@@ -83,7 +83,7 @@ test('should save a task for the "slug" application in a server endpoint differe
        });
 
 module("pybossa.userProgress(endpoint=/pybossa/) with PyBossa served from a non-root URL method");
-test('should get the userprogress using the "slug" application from the server', function() {
+test('should get the userprogress using the "slug" project from the server', function() {
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
 
@@ -111,11 +111,11 @@ test('should get the userprogress using the "slug" application from the server',
         });
 
 module("pybossa.run(endpoint=/pybossa/) with PyBossa served from a non-root URL method");
-test('should get a new task for the "slug" application from the server', function() {
+test('should get a new task for the "slug" project from the server', function() {
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
 
-        // Two sample applications are created
+        // Two sample projects are created
         app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(app);
@@ -127,7 +127,7 @@ test('should get a new task for the "slug" application from the server', functio
             tmp] 
             );
 
-        // One task for the application:
+        // One task for the project:
         var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "app_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
 
         var tmp = JSON.stringify(task);
@@ -139,7 +139,7 @@ test('should get a new task for the "slug" application from the server', functio
             tmp]
             );
 
-        // Second task for the application:
+        // Second task for the project:
         var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "app_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
 
         var tmp2 = JSON.stringify(task2);
@@ -160,7 +160,7 @@ test('should get a new task for the "slug" application from the server', functio
                 //console.log(answerId);
                 console.log("Id of task: " + task[0].id);
                 answerId += 1;
-                equal( task[0].app_id, 1, "The obtained task belongs to the Slug application (id: 1)");
+                equal( task[0].app_id, 1, "The obtained task belongs to the Slug project (id: 1)");
                 equal( task[0].id, answerId, "The TaskRun has been created using the right Task (id: " + answerId + ")");
                 deferred.resolve();
         });
