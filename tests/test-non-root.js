@@ -4,13 +4,13 @@ test('should get a new task for the "slug" project from a server endpoint differ
         var server = this.sandbox.useFakeServer();
 
         // Two sample projects are created
-        app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
-        var tmp = JSON.stringify(app);
+        var tmp = JSON.stringify(project);
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app?short_name=slug",
+            "GET", "/pybossa/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -22,16 +22,16 @@ test('should get a new task for the "slug" project from a server endpoint differ
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app/1/newtask",
+            "GET", "/pybossa/api/project/1/newtask",
             [200, { "Content-type": "application/json" },
             tmp]
             );
 
-        // Test the method newTask( appname );
+        // Test the method newTask( projectname );
         // Set the endpoint
         pybossa.setEndpoint( "/pybossa" );
         pybossa.newTask( "slug" ).done( function( data ) {
-                equal( data.question, app[0].description, "The obtained task belongs to the Slug project (id: 1)");
+                equal( data.question, project[0].description, "The obtained task belongs to the Slug project (id: 1)");
                 equal( data.task[0].id, task[0].id, "The TaskRun has been created using the right Task (id: 1)");
                 });
 
@@ -87,13 +87,13 @@ test('should get the userprogress using the "slug" project from the server', fun
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
 
-        app = {'done': 10, 'total': 100};
+        project = {'done': 10, 'total': 100};
 
-        var tmp = JSON.stringify(app);
+        var tmp = JSON.stringify(project);
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app/slug/userprogress",
+            "GET", "/pybossa/api/project/slug/userprogress",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -116,13 +116,13 @@ test('should get a new task for the "slug" project from the server', function() 
         var server = this.sandbox.useFakeServer();
 
         // Two sample projects are created
-        app = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
-        var tmp = JSON.stringify(app);
+        var tmp = JSON.stringify(project);
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app?short_name=slug",
+            "GET", "/pybossa/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -134,7 +134,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app/1/newtask?offset=0",
+            "GET", "/pybossa/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
             tmp]
             );
@@ -146,7 +146,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/app/1/newtask?offset=1",
+            "GET", "/pybossa/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
             tmp2]
             );
@@ -154,7 +154,7 @@ test('should get a new task for the "slug" project from the server', function() 
         // Set the endpoint
         pybossa.setEndpoint( "/pybossa" );
 
-        // Test the method newTask( appname );
+        // Test the method newTask( projectname );
         var answerId = 0;
         pybossa.taskLoaded(function(task, deferred){
                 //console.log(answerId);
