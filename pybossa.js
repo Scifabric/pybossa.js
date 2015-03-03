@@ -65,7 +65,7 @@ if (typeof(console) == 'undefined') {
     function createTaskRun( data ) {
         taskrun = {};
         taskrun = {
-            'app_id': data.app_id,
+            'project_id': data.project_id,
             'task_id': data.id,
             'info': data.answer
         };

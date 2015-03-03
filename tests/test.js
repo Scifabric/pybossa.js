@@ -16,7 +16,7 @@ test('should get a new task for the "slug" project from the server', function() 
             );
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "app_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
 
         var tmp = JSON.stringify(task);
 
@@ -45,7 +45,7 @@ test('should save a task for the "slug" project in the server', function() {
         var server = this.sandbox.useFakeServer();
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "app_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
 
         var tmp = JSON.stringify(task[0]);
 
@@ -56,7 +56,7 @@ test('should save a task for the "slug" project in the server', function() {
             tmp] 
             );
 
-        var taskrun = [{"info": {"answer": "Value"}, "user_id": 1, "task_id": 1, "created": "2012-04-02T11:51:24.478663", "finish_time": "2012-04-02T11:51:24.478663", "calibration": null, "app_id": 1, "user_ip": null, "timeout": null, "id": 1}];
+        var taskrun = [{"info": {"answer": "Value"}, "user_id": 1, "task_id": 1, "created": "2012-04-02T11:51:24.478663", "finish_time": "2012-04-02T11:51:24.478663", "calibration": null, "project_id": 1, "user_ip": null, "timeout": null, "id": 1}];
 
         var tmp = JSON.stringify(taskrun[0]);
 
@@ -135,7 +135,7 @@ test('should get a new task for the "slug" project from the server', function() 
             );
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "app_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
 
         var tmp = JSON.stringify(task);
 
@@ -147,7 +147,7 @@ test('should get a new task for the "slug" project from the server', function() 
             );
 
         // Second task for the project:
-        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "app_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
+        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
 
         var tmp2 = JSON.stringify(task2);
 
@@ -165,7 +165,7 @@ test('should get a new task for the "slug" project from the server', function() 
                 console.log("Id of task: " + task[0].id);
                 console.log("AnswerID: " + answerId);
                 answerId += 1;
-                equal( task[0].app_id, 1, "The obtained task belongs to the Slug project (id: 1)");
+                equal( task[0].project_id, 1, "The obtained task belongs to the Slug project (id: 1)");
                 equal( task[0].id, answerId, "The TaskRun has been created using the wrong Task (id: " + answerId + ")");
                 deferred.resolve();
         });
