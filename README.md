@@ -20,6 +20,22 @@ If you want more details, check the [documentation](http://pybossajs.rtfd.org).
 If you want to contribute to this library, please, read carefully the
 [Contribution Guidelines](CONTRIBUTING.md)
 
+# Running Tests
+
+You will need to have [npm](https://www.npmjs.com/) with either Node or io.js.
+First time, run:
+
+```
+  npm install -g grunt-cli
+  npm install
+```
+
+And from this point, you can run the tests simply with:
+
+```
+  grunt test
+```
+
 # Copyright
 
 Copyright 2013 SF Isle of Man
