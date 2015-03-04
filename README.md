@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/PyBossa/pybossa.js.svg)](https://travis-ci.org/PyBossa/pybossa.js)
+
 # PyBossa.JS: a JavaScript for PyBossa.
 
 PyBossa.JS is a simple JavaScript library that will allow you to create
