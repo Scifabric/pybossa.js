@@ -11,3 +11,4 @@ epio.ini
 .epioignore
 *.un~
 .DS_Store
+node_modules
