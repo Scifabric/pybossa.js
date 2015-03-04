@@ -1,0 +1,30 @@
+{
+  "name": "pybossa.js",
+  "version": "0.1.0",
+  "description": "JavaScript library to interact with a PyBossa server.",
+  "main": "pybossa.js",
+  "directories": {
+    "doc": "doc",
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/PyBossa/pybossa.js.git"
+  },
+  "keywords": [
+    "PyBossa"
+  ],
+  "author": "Daniel Lombraña González <teleyinex AT gmail DOT com>",
+  "license": "GPLv3",
+  "bugs": {
+    "url": "https://github.com/PyBossa/pybossa.js/issues"
+  },
+  "homepage": "https://github.com/PyBossa/pybossa.js",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-qunit": "^0.5.2"
+  }
+}
