@@ -127,24 +127,14 @@ if (typeof(console) == 'undefined') {
             dataType:'json'
         }).done(function(project) {
             project = project[0];
-            function getTask(offset) {
-                offset = offset || 0;
+            function getFirstTask() {
                 var def = $.Deferred();
+                var taskId = getCurrentTaskId(window.location.pathname);
+                var requestUrl = taskId ? url + 'api/task/' + taskId : url + 'api/project/' + project.id + '/newtask';
                 var xhr = $.ajax({
-                    url: url + 'api/project/' + project.id + '/newtask',
-                    data: 'offset=' + offset,
+                    url: requestUrl,
                     dataType: 'json'
                 });
-                if (window.history.length <= 1) {
-                    var taskId = getCurrentTaskId(window.location.pathname);
-                    if (taskId) {
-                        param =  'api/task/' + taskId;
-                        var xhr = $.ajax({
-                            url: url + 'api/task/' + taskId,
-                            dataType: 'json'
-                        })
-                    }
-                }
                 xhr.done(function(task) {
                     var udef = $.Deferred();
                     me.__taskLoaded(task, udef);
@@ -154,32 +144,55 @@ if (typeof(console) == 'undefined') {
                 });
                 return def.promise();
             }
+            function getTask(offset, previousTask) {
+                offset = offset || 0;
+                var def = $.Deferred();
+                var xhr = $.ajax({
+                    url: url + 'api/project/' + project.id + '/newtask',
+                    data: 'offset=' + offset,
+                    dataType: 'json'
+                });
+                xhr.done(function(task) {
+                    var udef = $.Deferred();
+                    if (previousTask && task.id === previousTask.id) {
+                        var secondTry = $.ajax({
+                            url: url + 'api/project/' + project.id + '/newtask',
+                            data: 'offset=' + (offset+1),
+                            dataType: 'json'
+                        })
+                        .done(function(secondTask) {
+                            me.__taskLoaded(secondTask, udef);
+                            udef.done(function(secondTask) {
+                                def.resolve(secondTask);
+                            });
+                        });
+                    }
+                    else {
+                        me.__taskLoaded(task, udef);
+                        udef.done(function(task) {
+                            def.resolve(task);
+                        });
+                    }
+                });
+                return def.promise();
+            }
 
-            function loop(task, answer) {
-                var nextLoaded = getTask(1),
+            function loop(task) {
+                var nextLoaded = getTask(1, task),
                 taskSolved = $.Deferred();
                 if (task.id) {
-                    // note if working with pybossa.js locally and opening the
-                    // html page with a file:/// urls the call to
-                    // history.pushState will result in a (silent) security
-                    // exception (in chrome at least) - wrap in try/except to
-                    // avoid this
-                    try {
-                        if (url != '/') {
-                            var nextUrl = url + '/project/' + projectname + '/task/' + task.id;
-                        }
-                        else {
-                            var nextUrl = '/project/' + projectname + '/task/' + task.id;
-                        }
-                        history.pushState ({}, "Title", nextUrl);
-                    } catch(e) {
-                        console.log(e);
+                    if (url != '/') {
+                        var nextUrl = url + '/project/' + projectname + '/task/' + task.id;
                     }
+                    else {
+                        var nextUrl = '/project/' + projectname + '/task/' + task.id;
+                    }
+                    history.pushState ({}, "Title", nextUrl);
                 }
                 me.__presentTask(task, taskSolved);
                 $.when(nextLoaded, taskSolved).done(loop);
             }
-            getTask().done(loop);
+            getFirstTask().done(loop);
         });
     }
 
