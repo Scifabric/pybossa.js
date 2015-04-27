@@ -158,6 +158,12 @@ test('should get a new task for the "slug" project from the server', function() 
             tmp2]
             );
 
+        server.respondWith(
+            "GET", "/api/project/1/newtask",
+            [200, { "Content-type": "application/json" },
+            tmp]
+            );
+
         // Test the method newTask( projectname );
         var answerId = 0;
         pybossa.taskLoaded(function(task, deferred){

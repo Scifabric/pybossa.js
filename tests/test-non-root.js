@@ -138,6 +138,11 @@ test('should get a new task for the "slug" project from the server', function() 
             [200, { "Content-type": "application/json" },
             tmp]
             );
+        server.respondWith(
+            "GET", "/pybossa/api/project/1/newtask",
+            [200, { "Content-type": "application/json" },
+            tmp]
+            );
 
         // Second task for the project:
         var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
