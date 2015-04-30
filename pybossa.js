@@ -28,10 +28,10 @@ if (typeof(console) == 'undefined') {
 
 
     // Private methods
-    function getApp(appname){
+    function getProject(projectname){
         return $.ajax({
-            url: url + 'api/app',
-            data: 'short_name='+appname,
+            url: url + 'api/project',
+            data: 'short_name='+projectname,
             dataType:'json'
         })
         .then( function( data ) {
@@ -39,9 +39,9 @@ if (typeof(console) == 'undefined') {
         } );
     }
 
-    function getTaskRun( app ) {
+    function getTaskRun( project ) {
         return $.ajax({
-            url: url + 'api/app/' + app.id + '/newtask',
+            url: url + 'api/project/' + project.id + '/newtask',
             dataType: 'json'
         })
         .then( function( data ) {
@@ -65,7 +65,7 @@ if (typeof(console) == 'undefined') {
     function createTaskRun( data ) {
         taskrun = {};
         taskrun = {
-            'app_id': data.app_id,
+            'project_id': data.project_id,
             'task_id': data.id,
             'info': data.answer
         };
@@ -98,9 +98,9 @@ if (typeof(console) == 'undefined') {
         return false;
     }
 
-    function userProgress( appname ) {
+    function userProgress( projectname ) {
         return $.ajax({
-            url: url + 'api/app/' + appname + '/userprogress',
+            url: url + 'api/project/' + projectname + '/userprogress',
             dataType: 'json'
         });
     }
@@ -119,19 +119,19 @@ if (typeof(console) == 'undefined') {
         this.__presentTask = userFunc;
     }
 
-    function run ( appname ) {
+    function run ( projectname ) {
         var me = this;
         $.ajax({
-            url: url + 'api/app',
-            data: 'short_name=' + appname,
+            url: url + 'api/project',
+            data: 'short_name=' + projectname,
             dataType:'json'
-        }).done(function(app) {
-            app = app[0];
+        }).done(function(project) {
+            project = project[0];
             function getTask(offset) {
                 offset = offset || 0;
                 var def = $.Deferred();
                 var xhr = $.ajax({
-                    url: url + 'api/app/' + app.id + '/newtask',
+                    url: url + 'api/project/' + project.id + '/newtask',
                     data: 'offset=' + offset,
                     dataType: 'json'
                 });
@@ -166,10 +166,10 @@ if (typeof(console) == 'undefined') {
                     // avoid this
                     try {
                         if (url != '/') {
-                            var nextUrl = url + '/app/' + appname + '/task/' + task.id;
+                            var nextUrl = url + '/project/' + projectname + '/task/' + task.id;
                         }
                         else {
-                            var nextUrl = '/app/' + appname + '/task/' + task.id;
+                            var nextUrl = '/project/' + projectname + '/task/' + task.id;
                         }
                         history.pushState ({}, "Title", nextUrl);
                     } catch(e) {
@@ -185,8 +185,8 @@ if (typeof(console) == 'undefined') {
 
 
     // Public methods
-    pybossa.newTask = function ( appname ) {
-        return getApp(appname).then(getTaskRun);
+    pybossa.newTask = function ( projectname ) {
+        return getProject(projectname).then(getTaskRun);
     };
 
     pybossa.saveTask = function ( taskid, answer ) {
@@ -202,12 +202,12 @@ if (typeof(console) == 'undefined') {
         }
     };
 
-    pybossa.userProgress = function ( appname ) {
-        return userProgress( appname );
+    pybossa.userProgress = function ( projectname ) {
+        return userProgress( projectname );
     };
 
-    pybossa.run = function ( appname ) {
-        return run( appname );
+    pybossa.run = function ( projectname ) {
+        return run( projectname );
     }
 
     pybossa.taskLoaded = function ( userFunc ) {

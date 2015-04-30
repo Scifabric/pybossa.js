@@ -48,7 +48,7 @@ The tasks in PyBossa have the following structure::
         "quorum": null,
         "calibration": 0,
         "created": "2012-04-04T11:12:04.842043",
-        "app_id": 1,
+        "project_id": 1,
         "state": "0",
         "id": 1030,
         "priority_0": 0
