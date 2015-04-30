@@ -52,7 +52,7 @@ if (typeof(console) == 'undefined') {
     }
     function _fetchTask(taskId) {
         return $.ajax({
-            url: url + 'api/task/' + taskid,
+            url: url + 'api/task/' + taskId,
             dataType: 'json'
         });
     }
