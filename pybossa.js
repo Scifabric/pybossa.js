@@ -111,25 +111,22 @@ if (typeof(console) == 'undefined') {
     }
 
     function taskLoaded (userFunc) {
-
-        this.__taskLoaded = userFunc;
+        __taskLoaded = userFunc;
     }
 
     function presentTask (userFunc) {
-        this.__presentTask = userFunc;
+        __presentTask = userFunc;
     }
 
     function resolveNextTaskLoaded(task, deferred) {
-        var me = this;
         var udef = $.Deferred();
-        me.__taskLoaded(task, udef);
+        __taskLoaded(task, udef);
         udef.done(function(task) {
             deferred.resolve(task);
         });
     }
 
     function run ( projectname ) {
-        var me = this;
         $.ajax({
             url: url + 'api/project',
             data: 'short_name=' + projectname,
@@ -187,7 +184,7 @@ if (typeof(console) == 'undefined') {
                     }
                     history.pushState ({}, "Title", nextUrl);
                 }
-                me.__presentTask(task, taskSolved);
+                __presentTask(task, taskSolved);
                 $.when(nextLoaded, taskSolved).done(loop);
             }
             getFirstTask().done(loop);
