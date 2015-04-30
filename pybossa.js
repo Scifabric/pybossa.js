@@ -28,7 +28,7 @@ if (typeof(console) == 'undefined') {
 
 
     // Private methods
-    function getProject(projectname){
+    function _getProject(projectname){
         return $.ajax({
             url: url + 'api/project',
             data: 'short_name='+projectname,
@@ -39,7 +39,7 @@ if (typeof(console) == 'undefined') {
         } );
     }
 
-    function getTaskRun( project ) {
+    function _getTaskRun( project ) {
         return $.ajax({
             url: url + 'api/project/' + project.id + '/newtask',
             dataType: 'json'
@@ -50,7 +50,7 @@ if (typeof(console) == 'undefined') {
         });
     }
 
-    function getTask( taskid, answer ) {
+    function _getTask( taskid, answer ) {
         return $.ajax({
             url: url + 'api/task/' + taskid,
             dataType: 'json'
@@ -62,7 +62,7 @@ if (typeof(console) == 'undefined') {
         });
     }
 
-    function createTaskRun( data ) {
+    function _createTaskRun( data ) {
         taskrun = {};
         taskrun = {
             'project_id': data.project_id,
@@ -84,7 +84,7 @@ if (typeof(console) == 'undefined') {
         });
     }
 
-    function getCurrentTaskId(url) {
+    function _getCurrentTaskId(url) {
         pathArray = url.split('/');
         if (url.indexOf('/task/')!=-1) {
             var l = pathArray.length;
@@ -98,7 +98,7 @@ if (typeof(console) == 'undefined') {
         return false;
     }
 
-    function userProgress( projectname ) {
+    function _userProgress( projectname ) {
         return $.ajax({
             url: url + 'api/project/' + projectname + '/userprogress',
             dataType: 'json'
@@ -106,27 +106,27 @@ if (typeof(console) == 'undefined') {
     }
 
     // fallback for user defined action
-    function __taskLoaded (task, deferred) {
+    function _taskLoaded (task, deferred) {
         deferred.resolve(task);
     }
 
-    function taskLoaded (userFunc) {
-        __taskLoaded = userFunc;
+    function _setUserTaskLoaded (userFunc) {
+        _taskLoaded = userFunc;
     }
 
-    function presentTask (userFunc) {
-        __presentTask = userFunc;
+    function _setUserPresentTask (userFunc) {
+        _presentTask = userFunc;
     }
 
-    function resolveNextTaskLoaded(task, deferred) {
+    function _resolveNextTaskLoaded(task, deferred) {
         var udef = $.Deferred();
-        __taskLoaded(task, udef);
+        _taskLoaded(task, udef);
         udef.done(function(task) {
             deferred.resolve(task);
         });
     }
 
-    function run ( projectname ) {
+    function _run ( projectname ) {
         $.ajax({
             url: url + 'api/project',
             data: 'short_name=' + projectname,
@@ -135,14 +135,14 @@ if (typeof(console) == 'undefined') {
             project = project[0];
             function getFirstTask() {
                 var def = $.Deferred();
-                var taskId = getCurrentTaskId(window.location.pathname);
+                var taskId = _getCurrentTaskId(window.location.pathname);
                 var requestUrl = taskId ? url + 'api/task/' + taskId : url + 'api/project/' + project.id + '/newtask';
                 var xhr = $.ajax({
                     url: requestUrl,
                     dataType: 'json'
                 });
                 xhr.done(function(task){
-                    resolveNextTaskLoaded(task, def);
+                    _resolveNextTaskLoaded(task, def);
                 });
                 return def.promise();
             }
@@ -162,11 +162,11 @@ if (typeof(console) == 'undefined') {
                             dataType: 'json'
                         })
                         .done(function(secondTask){
-                            resolveNextTaskLoaded(secondTask, def);
+                            _resolveNextTaskLoaded(secondTask, def);
                         });
                     }
                     else {
-                        resolveNextTaskLoaded(task, def);
+                        _resolveNextTaskLoaded(task, def);
                     }
                 });
                 return def.promise();
@@ -184,7 +184,7 @@ if (typeof(console) == 'undefined') {
                     }
                     history.pushState ({}, "Title", nextUrl);
                 }
-                __presentTask(task, taskSolved);
+                _presentTask(task, taskSolved);
                 $.when(nextLoaded, taskSolved).done(loop);
             }
             getFirstTask().done(loop);
@@ -194,36 +194,36 @@ if (typeof(console) == 'undefined') {
 
     // Public methods
     pybossa.newTask = function ( projectname ) {
-        return getProject(projectname).pipe(getTaskRun);
+        return _getProject(projectname).pipe(_getTaskRun);
     };
 
     pybossa.saveTask = function ( taskid, answer ) {
-        return getTask( taskid, answer ).pipe(createTaskRun);
+        return _getTask( taskid, answer ).pipe(_createTaskRun);
     };
 
     pybossa.getCurrentTaskId = function ( url ) {
         if (url !== undefined) {
-            return getCurrentTaskId(url);
+            return _getCurrentTaskId(url);
         }
         else {
-            return getCurrentTaskId(window.location.pathname);
+            return _getCurrentTaskId(window.location.pathname);
         }
     };
 
     pybossa.userProgress = function ( projectname ) {
-        return userProgress( projectname );
+        return _userProgress( projectname );
     };
 
     pybossa.run = function ( projectname ) {
-        return run( projectname );
+        return _run( projectname );
     }
 
     pybossa.taskLoaded = function ( userFunc ) {
-        return taskLoaded( userFunc );
+        return _setUserTaskLoaded( userFunc );
     }
 
     pybossa.presentTask = function ( userFunc ) {
-        return presentTask( userFunc );
+        return _setUserPresentTask( userFunc );
     }
 
     pybossa.setEndpoint = function ( endpoint ) {
