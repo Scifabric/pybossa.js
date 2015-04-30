@@ -43,7 +43,7 @@ test('should get a new task for the "slug" project from a server endpoint differ
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask",
+            "GET", "/pybossa/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
             tmp]
             );
@@ -156,11 +156,6 @@ test('should get a new task for the "slug" project from the server', function() 
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/pybossa/api/project/1/newtask?offset=0",
-            [200, { "Content-type": "application/json" },
-            tmp]
-            );
-        server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask",
             [200, { "Content-type": "application/json" },
             tmp]
             );

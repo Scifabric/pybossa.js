@@ -42,9 +42,11 @@ if (typeof(console) == 'undefined') {
         });
     }
 
-    function _fetchNewTask(projectId) {
+    function _fetchNewTask(projectId, offset) {
+        offset = offset || 0
         return $.ajax({
             url: url + 'api/project/' + projectId + '/newtask',
+            data: 'offset=' + offset,
             dataType: 'json'
         });
     }
@@ -93,8 +95,7 @@ if (typeof(console) == 'undefined') {
             'info': task.answer
         };
         taskrun = JSON.stringify(taskrun);
-        return _saveTaskRun(taskrun)
-        .then(function(data) {return data;});
+        return _saveTaskRun(taskrun) .then(function(data) {return data;});
     }
 
     function _getCurrentTaskId(url) {
@@ -134,20 +135,12 @@ if (typeof(console) == 'undefined') {
     }
 
     function _run (projectname) {
-        $.ajax({
-            url: url + 'api/project',
-            data: 'short_name=' + projectname,
-            dataType:'json'
-        }).done(function(project) {
+        _fetchProject(projectname).done(function(project) {
             project = project[0];
             function getFirstTask() {
                 var def = $.Deferred();
                 var taskId = _getCurrentTaskId(window.location.pathname);
-                var requestUrl = taskId ? url + 'api/task/' + taskId : url + 'api/project/' + project.id + '/newtask';
-                var xhr = $.ajax({
-                    url: requestUrl,
-                    dataType: 'json'
-                });
+                var xhr = taskId ? _fetchTask(taskId) : _fetchNewTask(project.id);
                 xhr.done(function(task){
                     _resolveNextTaskLoaded(task, def);
                 });
@@ -156,18 +149,10 @@ if (typeof(console) == 'undefined') {
             function getTask(offset, previousTask) {
                 offset = offset || 0;
                 var def = $.Deferred();
-                var xhr = $.ajax({
-                    url: url + 'api/project/' + project.id + '/newtask',
-                    data: 'offset=' + offset,
-                    dataType: 'json'
-                });
+                var xhr = _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
                     if (previousTask && task.id === previousTask.id) {
-                        var secondTry = $.ajax({
-                            url: url + 'api/project/' + project.id + '/newtask',
-                            data: 'offset=' + (offset+1),
-                            dataType: 'json'
-                        })
+                        var secondTry = _fetchNewTask(project.id, offset+1)
                         .done(function(secondTask){
                             _resolveNextTaskLoaded(secondTask, def);
                         });

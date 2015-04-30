@@ -43,7 +43,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask",
+            "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
             tmp]
             );
@@ -177,12 +177,6 @@ test('should get a new task for the "slug" project from the server', function() 
             "GET", "/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
             tmp2]
-            );
-
-        server.respondWith(
-            "GET", "/api/project/1/newtask",
-            [200, { "Content-type": "application/json" },
-            tmp]
             );
 
         // Test the method newTask( projectname );
