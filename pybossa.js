@@ -119,6 +119,15 @@ if (typeof(console) == 'undefined') {
         this.__presentTask = userFunc;
     }
 
+    function resolveNextTaskLoaded(task, deferred) {
+        var me = this;
+        var udef = $.Deferred();
+        me.__taskLoaded(task, udef);
+        udef.done(function(task) {
+            deferred.resolve(task);
+        });
+    }
+
     function run ( projectname ) {
         var me = this;
         $.ajax({
@@ -135,12 +144,8 @@ if (typeof(console) == 'undefined') {
                     url: requestUrl,
                     dataType: 'json'
                 });
-                xhr.done(function(task) {
-                    var udef = $.Deferred();
-                    me.__taskLoaded(task, udef);
-                    udef.done(function(task) {
-                        def.resolve(task);
-                    });
+                xhr.done(function(task){
+                    resolveNextTaskLoaded(task, def);
                 });
                 return def.promise();
             }
@@ -153,25 +158,18 @@ if (typeof(console) == 'undefined') {
                     dataType: 'json'
                 });
                 xhr.done(function(task) {
-                    var udef = $.Deferred();
                     if (previousTask && task.id === previousTask.id) {
                         var secondTry = $.ajax({
                             url: url + 'api/project/' + project.id + '/newtask',
                             data: 'offset=' + (offset+1),
                             dataType: 'json'
                         })
-                        .done(function(secondTask) {
-                            me.__taskLoaded(secondTask, udef);
-                            udef.done(function(secondTask) {
-                                def.resolve(secondTask);
-                            });
+                        .done(function(secondTask){
+                            resolveNextTaskLoaded(secondTask, def);
                         });
                     }
                     else {
-                        me.__taskLoaded(task, udef);
-                        udef.done(function(task) {
-                            def.resolve(task);
-                        });
+                        resolveNextTaskLoaded(task, def);
                     }
                 });
                 return def.promise();
