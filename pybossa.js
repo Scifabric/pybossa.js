@@ -34,7 +34,7 @@ if (typeof(console) == 'undefined') {
             data: 'short_name='+projectname,
             dataType:'json'
         })
-        .pipe( function( data ) {
+        .then( function( data ) {
             return data[0];
         } );
     }
@@ -44,7 +44,7 @@ if (typeof(console) == 'undefined') {
             url: url + 'api/project/' + project.id + '/newtask',
             dataType: 'json'
         })
-        .pipe( function( data ) {
+        .then( function( data ) {
             taskrun = { question: project.description, task: data};
             return taskrun;
         });
@@ -55,7 +55,7 @@ if (typeof(console) == 'undefined') {
             url: url + 'api/task/' + taskid,
             dataType: 'json'
         })
-        .pipe( function( data ) {
+        .then( function( data ) {
             tmp = data;
             tmp.answer = answer;
             return tmp;
@@ -79,7 +79,7 @@ if (typeof(console) == 'undefined') {
             contentType: 'application/json',
             data: taskrun
         })
-        .pipe( function( data ) {
+        .then( function( data ) {
             return data;
         });
     }
@@ -194,11 +194,11 @@ if (typeof(console) == 'undefined') {
 
     // Public methods
     pybossa.newTask = function ( projectname ) {
-        return _getProject(projectname).pipe(_getTaskRun);
+        return _getProject(projectname).then(_getTaskRun);
     };
 
     pybossa.saveTask = function ( taskid, answer ) {
-        return _getTask( taskid, answer ).pipe(_createTaskRun);
+        return _getTask( taskid, answer ).then(_createTaskRun);
     };
 
     pybossa.getCurrentTaskId = function ( url ) {
