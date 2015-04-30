@@ -23,65 +23,78 @@ if (typeof(console) == 'undefined') {
   };
 }
 
-(function( pybossa, $, undefined ) {
+(function(pybossa, $, undefined) {
     var url = '/';
 
+    //AJAX calls
+    function _userProgress(projectname) {
+        return $.ajax({
+            url: url + 'api/project/' + projectname + '/userprogress',
+            dataType: 'json'
+        });
+    }
 
-    // Private methods
-    function _getProject(projectname){
+    function _fetchProject(projectname) {
         return $.ajax({
             url: url + 'api/project',
             data: 'short_name='+projectname,
             dataType:'json'
-        })
-        .then( function( data ) {
-            return data[0];
-        } );
-    }
-
-    function _getTaskRun( project ) {
-        return $.ajax({
-            url: url + 'api/project/' + project.id + '/newtask',
-            dataType: 'json'
-        })
-        .then( function( data ) {
-            taskrun = { question: project.description, task: data};
-            return taskrun;
         });
     }
 
-    function _getTask( taskid, answer ) {
+    function _fetchNewTask(projectId) {
+        return $.ajax({
+            url: url + 'api/project/' + projectId + '/newtask',
+            dataType: 'json'
+        });
+    }
+    function _fetchTask(taskId) {
         return $.ajax({
             url: url + 'api/task/' + taskid,
             dataType: 'json'
-        })
-        .then( function( data ) {
-            tmp = data;
-            tmp.answer = answer;
-            return tmp;
         });
     }
 
-    function _createTaskRun( data ) {
-        taskrun = {};
-        taskrun = {
-            'project_id': data.project_id,
-            'task_id': data.id,
-            'info': data.answer
-        };
-
-        taskrun = JSON.stringify(taskrun);
-
+    function _saveTaskRun(taskrun) {
         return $.ajax({
             type: 'POST',
             url: url + 'api/taskrun',
             dataType: 'json',
             contentType: 'application/json',
             data: taskrun
-        })
-        .then( function( data ) {
-            return data;
         });
+    }
+
+    // Private methods
+    function _getProject(projectname){
+        return _fetchProject(projectname)
+        .then(function(data) {return data[0];});
+    }
+
+    function _getNewTask(project) {
+        return _fetchNewTask(project.id)
+        .then(_addProjectDescription.bind(undefined, project));
+    }
+
+    function _addProjectDescription(project, task) {
+        return { question: project.description, task: task};
+        }
+
+    function _addAnswerToTask(task, answer) {
+        task.answer = answer;
+        return task;
+    }
+
+    function _createTaskRun(answer, task) {
+        task = _addAnswerToTask(task, answer);
+        var taskrun = {
+            'project_id': task.project_id,
+            'task_id': task.id,
+            'info': task.answer
+        };
+        taskrun = JSON.stringify(taskrun);
+        return _saveTaskRun(taskrun)
+        .then(function(data) {return data;});
     }
 
     function _getCurrentTaskId(url) {
@@ -98,12 +111,6 @@ if (typeof(console) == 'undefined') {
         return false;
     }
 
-    function _userProgress( projectname ) {
-        return $.ajax({
-            url: url + 'api/project/' + projectname + '/userprogress',
-            dataType: 'json'
-        });
-    }
 
     // fallback for user defined action
     function _taskLoaded (task, deferred) {
@@ -126,7 +133,7 @@ if (typeof(console) == 'undefined') {
         });
     }
 
-    function _run ( projectname ) {
+    function _run (projectname) {
         $.ajax({
             url: url + 'api/project',
             data: 'short_name=' + projectname,
@@ -193,15 +200,15 @@ if (typeof(console) == 'undefined') {
 
 
     // Public methods
-    pybossa.newTask = function ( projectname ) {
-        return _getProject(projectname).then(_getTaskRun);
+    pybossa.newTask = function (projectname) {
+        return _getProject(projectname).then(_getNewTask);
     };
 
-    pybossa.saveTask = function ( taskid, answer ) {
-        return _getTask( taskid, answer ).then(_createTaskRun);
+    pybossa.saveTask = function (taskid, answer) {
+        return _fetchTask(taskid).then(_createTaskRun.bind(undefined, answer));
     };
 
-    pybossa.getCurrentTaskId = function ( url ) {
+    pybossa.getCurrentTaskId = function (url) {
         if (url !== undefined) {
             return _getCurrentTaskId(url);
         }
@@ -210,23 +217,23 @@ if (typeof(console) == 'undefined') {
         }
     };
 
-    pybossa.userProgress = function ( projectname ) {
+    pybossa.userProgress = function (projectname) {
         return _userProgress( projectname );
     };
 
-    pybossa.run = function ( projectname ) {
+    pybossa.run = function (projectname) {
         return _run( projectname );
     }
 
-    pybossa.taskLoaded = function ( userFunc ) {
+    pybossa.taskLoaded = function (userFunc) {
         return _setUserTaskLoaded( userFunc );
     }
 
-    pybossa.presentTask = function ( userFunc ) {
+    pybossa.presentTask = function (userFunc) {
         return _setUserPresentTask( userFunc );
     }
 
-    pybossa.setEndpoint = function ( endpoint ) {
+    pybossa.setEndpoint = function (endpoint) {
         // Check that the URL has the trailing slash, otherwise add it
         if ( endpoint.charAt(endpoint.length-1) != '/' ) {
             endpoint += '/';
@@ -235,4 +242,4 @@ if (typeof(console) == 'undefined') {
         return url;
     }
 
-} ( window.pybossa = window.pybossa || {}, jQuery ));
+} (window.pybossa = window.pybossa || {}, jQuery));
