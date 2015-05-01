@@ -129,19 +129,11 @@
     function _run (projectname) {
         _fetchProject(projectname).done(function(project) {
             project = project[0];
-            function getFirstTask() {
-                var def = $.Deferred();
-                var taskId = _getCurrentTaskId(window.location.pathname);
-                var xhr = taskId ? _fetchTask(taskId) : _fetchNewTask(project.id);
-                xhr.done(function(task){
-                    _resolveNextTaskLoaded(task, def);
-                });
-                return def.promise();
-            }
-            function getTask(offset, previousTask) {
+            function getNextTask(offset, previousTask) {
                 offset = offset || 0;
                 var def = $.Deferred();
-                var xhr = _fetchNewTask(project.id, offset);
+                var taskId = _getCurrentTaskId(window.location.pathname);
+                var xhr = (taskId && (previousTask === undefined)) ? _fetchTask(taskId) : _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
                     if (previousTask && task.id === previousTask.id) {
                         var secondTry = _fetchNewTask(project.id, offset+1)
@@ -157,7 +149,7 @@
             }
 
             function loop(task) {
-                var nextLoaded = getTask(1, task),
+                var nextLoaded = getNextTask(1, task),
                 taskSolved = $.Deferred();
                 if (task.id) {
                     if (url != '/') {
@@ -171,7 +163,7 @@
                 _presentTask(task, taskSolved);
                 $.when(nextLoaded, taskSolved).done(loop);
             }
-            getFirstTask().done(loop);
+            getNextTask(0, undefined).done(loop);
         });
     }
 
