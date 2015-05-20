@@ -104,7 +104,6 @@
         return false;
     }
 
-
     // fallback for user defined action
     function _taskLoaded (task, deferred) {
         deferred.resolve(task);
@@ -126,13 +125,14 @@
         });
     }
 
-    function _run (projectname) {
+    function _run (projectname, _window) {
+        var _window = _window || window;
         _fetchProject(projectname).done(function(project) {
             project = project[0];
             function getNextTask(offset, previousTask) {
                 offset = offset || 0;
                 var def = $.Deferred();
-                var taskId = _getCurrentTaskId(window.location.pathname);
+                var taskId = _getCurrentTaskId(_window.location.pathname);
                 var xhr = (taskId && (previousTask === undefined)) ? _fetchTask(taskId) : _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
                     if (previousTask && task.id === previousTask.id) {
@@ -158,7 +158,7 @@
                     else {
                         var nextUrl = '/project/' + projectname + '/task/' + task.id;
                     }
-                    history.pushState ({}, "Title", nextUrl);
+                    history.pushState({}, "Title", nextUrl);
                 }
                 _presentTask(task, taskSolved);
                 $.when(nextLoaded, taskSolved).done(loop);
@@ -190,8 +190,8 @@
         return _userProgress( projectname );
     };
 
-    pybossa.run = function (projectname) {
-        return _run( projectname );
+    pybossa.run = function (projectname, _window) {
+        return _run(projectname, _window);
     }
 
     pybossa.taskLoaded = function (userFunc) {
