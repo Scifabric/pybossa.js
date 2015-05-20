@@ -35,7 +35,7 @@
     }
 
     function _fetchNewTask(projectId, offset) {
-        offset = offset || 0
+        offset = offset || 0;
         return $.ajax({
             url: url + 'api/project/' + projectId + '/newtask',
             data: 'offset=' + offset,
@@ -135,7 +135,7 @@
                 var taskId = _getCurrentTaskId(_window.location.pathname);
                 var xhr = (taskId && (previousTask === undefined)) ? _fetchTask(taskId) : _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
-                    if (previousTask && task.id === previousTask.id) {
+                    if (previousTask && task[0].id === previousTask[0].id) {
                         var secondTry = _fetchNewTask(project.id, offset+1)
                         .done(function(secondTask){
                             _resolveNextTaskLoaded(secondTask, def);

@@ -57,7 +57,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // Trigger the server endpoints
         server.respond();
-        });
+});
 
 module("pybossa.saveTask() method");
 
@@ -96,7 +96,7 @@ test('should save a task for the "slug" project in the server', function() {
                 });
 
         server.respond();
-       });
+});
 
 module("pybossa.getCurrentTaskId() method");
 
@@ -104,13 +104,13 @@ test('should return the TaskId from the URL', function() {
         url = "http://pybossa.com/project/flickrperson/task/1";
         var res = pybossa.getCurrentTaskId(url);
         equal("1" , res, "The returned task.id is the same of the URL");
-       });
+});
 
 test('should return false as URL does not have the task slug', function() {
         url = "http://pybossa.com/project/flickrperson/newtask";
         var res = pybossa.getCurrentTaskId(url);
         equal(false , res, "The URL does not have a task");
-       });
+});
 
 module("pybossa.userProgress( projectname ) with PyBossa served from a root URL method");
 test('should get the userprogress using the "slug" project from the server', function() {
@@ -136,7 +136,7 @@ test('should get the userprogress using the "slug" project from the server', fun
 
         // Trigger the server endpoints
         server.respond();
-        });
+});
 
 module("pybossa.run() with PyBossa served from a root URL method");
 test('should get a new task for the "slug" project from the server', function() {
@@ -204,4 +204,175 @@ test('should get a new task for the "slug" project from the server', function() 
         // Trigger the server endpoints
         server.respond();
         expect(4);
+});
+
+test('should get the task specified in the url (server/project/projectName/task/3)', function() {
+        // We use the FakeServer feature to test pybossa.js
+        var server = this.sandbox.useFakeServer();
+
+        // Two sample projects are created
+        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+
+        var tmp = JSON.stringify(project);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project?short_name=slug",
+            [200, { "Content-type": "application/json" },
+            tmp] 
+            );
+
+        // One task for the project:
+        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+
+        var tmp = JSON.stringify(task);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project/1/newtask?offset=0",
+            [200, { "Content-type": "application/json" },
+            tmp]
+            );
+
+        // Second task for the project:
+        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
+
+        var tmp2 = JSON.stringify(task2);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project/1/newtask?offset=1",
+            [200, { "Content-type": "application/json" },
+            tmp2]
+            );
+
+        var requestedTask = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0}];
+
+        var tmp3 = JSON.stringify(requestedTask);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/task/3",
+            [200, { "Content-type": "application/json" },
+            tmp3]
+            );
+
+        // The first task must be the requested one with id=3, the second one with id=1
+        var firstTask = true;
+        pybossa.taskLoaded(function(task, deferred){
+                var expectedID = (firstTask) ? 3 : 2;
+                equal(task[0].id, expectedID, "Wrong task received");
+                if (firstTask) firstTask = false;
+                deferred.resolve(task);
         });
+
+        pybossa.presentTask(function(task, deferred){
+            if (task[0]) {
+                deferred.resolve(task);
+            }
+        });
+
+        var _window = {location: {pathname: "http://pybossaServer.com/project/1/task/3"},
+                       history: {pushState: function(somethig, another, state){
+                                                var that = _window;
+                                                that.location.pathname = state;}
+                                }
+                      };
+
+        pybossa.run('slug', _window);
+
+        // Trigger the server endpoints
+        server.respond();
+        expect(2);
+});
+
+test('loads a different "next" task when requesting what would be returned as "next" task', function() {
+        // We use the FakeServer feature to test pybossa.js
+        var server = this.sandbox.useFakeServer();
+
+        // Two sample projects are created
+        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+
+        var tmp = JSON.stringify(project);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project?short_name=slug",
+            [200, { "Content-type": "application/json" },
+            tmp] 
+            );
+
+        // One task for the project:
+        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+
+        var tmp = JSON.stringify(task);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project/1/newtask?offset=0",
+            [200, { "Content-type": "application/json" },
+            tmp]
+            );
+
+        // Second task for the project:
+        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
+
+        var tmp2 = JSON.stringify(task2);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project/1/newtask?offset=1",
+            [200, { "Content-type": "application/json" },
+            tmp2]
+            );
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/task/2",
+            [200, { "Content-type": "application/json" },
+            tmp2]
+            );
+
+        var requestedTask = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0}];
+
+        var tmp3 = JSON.stringify(requestedTask);
+
+        // The endpoint for the FakeServer:
+        server.respondWith(
+            "GET", "/pybossa/api/project/1/newtask?offset=2",
+            [200, { "Content-type": "application/json" },
+            tmp3]
+            );
+
+        // The first task must be the requested one with id=2, the second one with an id different than 3
+        pybossa.taskLoaded(function(task, deferred){
+            deferred.resolve(task);
+        });
+
+        var firstTask = true;
+        pybossa.presentTask(function(task, deferred){
+            if (firstTask) {
+                equal(task[0].id, 2, "Wrong task received");
+                firstTask = false;
+            }
+            else {
+                notEqual(task[0].id, 2, "Wrong task received");
+            }
+            if (task[0].id === 2) {
+                deferred.resolve(task);
+            }
+        });
+
+        var _window = {location: {pathname: "http://pybossaServer.com/project/1/task/2"},
+                       history: {pushState: function(somethig, another, state){
+                                                var that = _window;
+                                                that.location.pathname = state;}
+                                }
+                      };
+
+        pybossa.run('slug', _window);
+
+        // Trigger the server endpoints
+        server.respond();
+        expect(2);
+});
