@@ -217,7 +217,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project?short_name=slug",
+            "GET", "/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -229,7 +229,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask?offset=0",
+            "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
             tmp]
             );
@@ -241,7 +241,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask?offset=1",
+            "GET", "/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
             tmp2]
             );
@@ -252,7 +252,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/task/3",
+            "GET", "/api/task/3",
             [200, { "Content-type": "application/json" },
             tmp3]
             );
@@ -297,7 +297,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project?short_name=slug",
+            "GET", "/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
             tmp] 
             );
@@ -309,7 +309,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask?offset=0",
+            "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
             tmp]
             );
@@ -321,14 +321,14 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask?offset=1",
+            "GET", "/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
             tmp2]
             );
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/task/2",
+            "GET", "/api/task/2",
             [200, { "Content-type": "application/json" },
             tmp2]
             );
@@ -339,7 +339,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/pybossa/api/project/1/newtask?offset=2",
+            "GET", "/api/project/1/newtask?offset=2",
             [200, { "Content-type": "application/json" },
             tmp3]
             );
