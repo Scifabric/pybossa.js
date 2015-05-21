@@ -37,7 +37,7 @@ test('should get a new task for the "slug" project from a server endpoint differ
             );
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
         var tmp = JSON.stringify(task);
 
@@ -53,7 +53,7 @@ test('should get a new task for the "slug" project from a server endpoint differ
         pybossa.setEndpoint( "/pybossa" );
         pybossa.newTask( "slug" ).done( function( data ) {
                 equal( data.question, project[0].description, "The obtained task belongs to the Slug project (id: 1)");
-                equal( data.task[0].id, task[0].id, "The TaskRun has been created using the right Task (id: 1)");
+                equal( data.task.id, task.id, "The TaskRun has been created using the right Task (id: 1)");
                 });
 
         // Trigger the server endpoints
@@ -68,9 +68,9 @@ test('should save a task for the "slug" project in a server endpoint different f
         var server = this.sandbox.useFakeServer();
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
-        var tmp = JSON.stringify(task[0]);
+        var tmp = JSON.stringify(task);
 
         // The endpoint for the FakeServer:
         server.respondWith(
@@ -79,9 +79,9 @@ test('should save a task for the "slug" project in a server endpoint different f
             tmp] 
             );
 
-        var taskrun = [{"info": {"answer": "Value"}, "user_id": 1, "task_id": 1, "created": "2012-04-02T11:51:24.478663", "finish_time": "2012-04-02T11:51:24.478663", "calibration": null, "project_id": 1, "user_ip": null, "timeout": null, "id": 1}];
+        var taskrun = {"info": {"answer": "Value"}, "user_id": 1, "task_id": 1, "created": "2012-04-02T11:51:24.478663", "finish_time": "2012-04-02T11:51:24.478663", "calibration": null, "project_id": 1, "user_ip": null, "timeout": null, "id": 1};
 
-        var tmp = JSON.stringify(taskrun[0]);
+        var tmp = JSON.stringify(taskrun);
 
         // The endpoint for the FakeServer:
         server.respondWith(
@@ -92,12 +92,12 @@ test('should save a task for the "slug" project in a server endpoint different f
 
         // Test the method submitTask( taskid, answer );
         taskid = 1;
-        ans = taskrun[0].info;
+        ans = taskrun.info;
 
         // Set the endpoint
         pybossa.setEndpoint( "/pybossa" );
         pybossa.saveTask( taskid, ans ).done( function( data ) {
-                equal( data.info.answer, taskrun[0].info.answer, "The obtained task belongs to the Slug project (id: 1)");
+                equal( data.info.answer, taskrun.info.answer, "The obtained task belongs to the Slug project (id: 1)");
                 });
 
         server.respond();
@@ -149,7 +149,7 @@ test('should get a new task for the "slug" project from the server', function() 
             );
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
         var tmp = JSON.stringify(task);
 
@@ -161,7 +161,7 @@ test('should get a new task for the "slug" project from the server', function() 
             );
 
         // Second task for the project:
-        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
+        var task2 = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0};
 
         var tmp2 = JSON.stringify(task2);
 
@@ -178,19 +178,15 @@ test('should get a new task for the "slug" project from the server', function() 
         // Test the method newTask( projectname );
         var answerId = 0;
         pybossa.taskLoaded(function(task, deferred){
-                //console.log(answerId);
-                console.log("Id of task: " + task[0].id);
                 answerId += 1;
-                equal( task[0].project_id, 1, "The obtained task belongs to the Slug project (id: 1)");
-                equal( task[0].id, answerId, "The TaskRun has been created using the right Task (id: " + answerId + ")");
-                deferred.resolve();
+                equal( task.project_id, 1, "The obtained task belongs to the Slug project (id: 1)");
+                equal( task.id, answerId, "The TaskRun has been created using the right Task (id: " + answerId + ")");
+                deferred.resolve(task);
         });
 
         pybossa.presentTask(function(task, deferred){
-            // pybossa.saveTask(task.id, answer) <- works
-            console.log("Task presented!");
-            if (task[0]) {
-                deferred.resolve();
+            if (task) {
+                deferred.resolve(task);
             }
         });
 
@@ -218,7 +214,7 @@ test('should get the task specified in the url (server/project/projectName/task/
             );
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
         var tmp = JSON.stringify(task);
 
@@ -230,7 +226,7 @@ test('should get the task specified in the url (server/project/projectName/task/
             );
 
         // Second task for the project:
-        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
+        var task2 = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0};
 
         var tmp2 = JSON.stringify(task2);
 
@@ -241,7 +237,7 @@ test('should get the task specified in the url (server/project/projectName/task/
             tmp2]
             );
 
-        var requestedTask = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0}];
+        var requestedTask = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0};
 
         var tmp3 = JSON.stringify(requestedTask);
 
@@ -255,17 +251,17 @@ test('should get the task specified in the url (server/project/projectName/task/
         // Set the endpoint
         pybossa.setEndpoint( "/pybossa" );
 
-        // The first task must be the requested one with id=3, the second one with id=1
+        // The first task must be the requested one with id=3, the second one with id=2
         var firstTask = true;
         pybossa.taskLoaded(function(task, deferred){
                 var expectedID = (firstTask) ? 3 : 2;
-                equal(task[0].id, expectedID, "Wrong task received");
+                equal(task.id, expectedID, "Wrong task received");
                 if (firstTask) firstTask = false;
                 deferred.resolve(task);
         });
 
         pybossa.presentTask(function(task, deferred){
-            if (task[0]) {
+            if (task) {
                 deferred.resolve(task);
             }
         });
@@ -301,7 +297,7 @@ test('loads a different "next" task when requesting what would be returned as "n
             );
 
         // One task for the project:
-        var task = [{"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0}];
+        var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
         var tmp = JSON.stringify(task);
 
@@ -313,7 +309,7 @@ test('loads a different "next" task when requesting what would be returned as "n
             );
 
         // Second task for the project:
-        var task2 = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0}];
+        var task2 = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0};
 
         var tmp2 = JSON.stringify(task2);
 
@@ -331,7 +327,7 @@ test('loads a different "next" task when requesting what would be returned as "n
             tmp2]
             );
 
-        var requestedTask = [{"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0}];
+        var requestedTask = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0};
 
         var tmp3 = JSON.stringify(requestedTask);
 
@@ -346,20 +342,20 @@ test('loads a different "next" task when requesting what would be returned as "n
         pybossa.setEndpoint( "/pybossa" );
 
         // The first task must be the requested one with id=2, the second one with an id different than 3
-        pybossa.taskLoaded(function(task, deferred){
-            deferred.resolve(task);
-        });
-
         var firstTask = true;
-        pybossa.presentTask(function(task, deferred){
+        pybossa.taskLoaded(function(task, deferred){
             if (firstTask) {
-                equal(task[0].id, 2, "Wrong task received");
+                equal(task.id, 2, "Wrong task received");
                 firstTask = false;
             }
             else {
-                notEqual(task[0].id, 2, "Wrong task received");
+                notEqual(task.id, 2, "Wrong task received");
             }
-            if (task[0].id === 2) {
+            deferred.resolve(task);
+        });
+
+        pybossa.presentTask(function(task, deferred){
+            if (task.id === 2) {
                 deferred.resolve(task);
             }
         });

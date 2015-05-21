@@ -87,7 +87,7 @@
             'info': task.answer
         };
         taskrun = JSON.stringify(taskrun);
-        return _saveTaskRun(taskrun) .then(function(data) {return data;});
+        return _saveTaskRun(taskrun).then(function(data) {return data;});
     }
 
     function _getCurrentTaskId(url) {
@@ -135,7 +135,7 @@
                 var taskId = _getCurrentTaskId(_window.location.pathname);
                 var xhr = (taskId && (previousTask === undefined)) ? _fetchTask(taskId) : _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
-                    if (previousTask && task[0].id === previousTask[0].id) {
+                    if (previousTask && task.id === previousTask.id) {
                         var secondTry = _fetchNewTask(project.id, offset+1)
                         .done(function(secondTask){
                             _resolveNextTaskLoaded(secondTask, def);
