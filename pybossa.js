@@ -130,7 +130,7 @@
     }
 
     function _run (projectname, _window) {
-        var _window = _window || window;
+        _window = _window || window;
         _fetchProject(projectname).done(function(project) {
             project = project[0];
             function getNextTask(offset, previousTask) {
