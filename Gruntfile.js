@@ -5,7 +5,7 @@ module.exports = function(grunt) {
       all: ['tests/index.html']
     },
     jshint: {
-      files: ['Gruntfile.js', 'pybossa.js', 'tests/**/*.js'],
+      files: ['Gruntfile.js', 'pybossa.js', 'tests/*.js'],
       options: {
         // options here to override JSHint defaults
         globals: {
@@ -29,4 +29,4 @@ module.exports = function(grunt) {
   grunt.registerTask('default', ['jshint', 'qunit']);
   grunt.registerTask('test', ['qunit']);
   grunt.registerTask('dev', ['watch', 'jshint', 'qunit']);
-}
+};
