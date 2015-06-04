@@ -105,9 +105,13 @@
     }
 
     // fallback for user defined action
-    function _taskLoaded (task, deferred) {
+    var _taskLoaded = function(task, deferred) {
         deferred.resolve(task);
-    }
+    };
+
+    var _presentTask = function(task, deferred) {
+        deferred.resolve(task);
+    };
 
     function _setUserTaskLoaded (userFunc) {
         _taskLoaded = userFunc;
@@ -150,13 +154,14 @@
 
             function loop(task) {
                 var nextLoaded = getNextTask(1, task),
-                taskSolved = $.Deferred();
+                taskSolved = $.Deferred(),
+                nextUrl;
                 if (task.id) {
                     if (url != '/') {
-                        var nextUrl = url + '/project/' + projectname + '/task/' + task.id;
+                        nextUrl = url + '/project/' + projectname + '/task/' + task.id;
                     }
                     else {
-                        var nextUrl = '/project/' + projectname + '/task/' + task.id;
+                        nextUrl = '/project/' + projectname + '/task/' + task.id;
                     }
                     history.pushState({}, "Title", nextUrl);
                 }
@@ -192,15 +197,15 @@
 
     pybossa.run = function (projectname, _window) {
         return _run(projectname, _window);
-    }
+    };
 
     pybossa.taskLoaded = function (userFunc) {
         return _setUserTaskLoaded( userFunc );
-    }
+    };
 
     pybossa.presentTask = function (userFunc) {
         return _setUserPresentTask( userFunc );
-    }
+    };
 
     pybossa.setEndpoint = function (endpoint) {
         // Check that the URL has the trailing slash, otherwise add it
@@ -209,6 +214,6 @@
         }
         url = endpoint;
         return url;
-    }
+    };
 
 } (window.pybossa = window.pybossa || {}, jQuery));
