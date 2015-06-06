@@ -4,7 +4,7 @@ test('should get a new task for the "slug" project from the server', function() 
         var server = this.sandbox.useFakeServer();
 
         // Two sample projects are created
-        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+        var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(project);
 
@@ -96,9 +96,9 @@ test('should get the userprogress using the "slug" project from the server', fun
         // We use the FakeServer feature to test pybossa.js
         var server = this.sandbox.useFakeServer();
 
-        project = {'done': 10, 'total': 100};
+        var progress = {'done': 10, 'total': 100};
 
-        var tmp = JSON.stringify(project);
+        var tmp = JSON.stringify(progress);
 
         // The endpoint for the FakeServer:
         server.respondWith(
@@ -123,7 +123,7 @@ test('should get a new task for the "slug" project from the server', function() 
         var server = this.sandbox.useFakeServer();
 
         // Two sample projects are created
-        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+        var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(project);
 
@@ -185,7 +185,7 @@ test('should get the task specified in the url (server/project/projectName/task/
         var server = this.sandbox.useFakeServer();
 
         // Two sample projects are created
-        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+        var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(project);
 
@@ -265,7 +265,7 @@ test('loads a different "next" task when requesting what would be returned as "n
         var server = this.sandbox.useFakeServer();
 
         // Two sample projects are created
-        project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
+        var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
         var tmp = JSON.stringify(project);
 

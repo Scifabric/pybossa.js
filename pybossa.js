@@ -178,8 +178,8 @@
         return _getProject(projectname).then(_getNewTask);
     };
 
-    pybossa.saveTask = function (taskid, answer) {
-        return _fetchTask(taskid).then(_createTaskRun.bind(undefined, answer));
+    pybossa.saveTask = function (taskId, answer) {
+        return _fetchTask(taskId).then(_createTaskRun.bind(undefined, answer));
     };
 
     pybossa.getCurrentTaskId = function (url) {
