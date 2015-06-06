@@ -6,25 +6,21 @@ test('should get a new task for the "slug" project from the server', function() 
         // Two sample projects are created
         var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
-        var tmp = JSON.stringify(project);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
-            tmp] 
+            JSON.stringify(project)]
             );
 
         // One task for the project:
         var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
-        var tmp = JSON.stringify(task);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
-            tmp]
+            JSON.stringify(task)]
             );
 
         // Test the method newTask( projectname );
@@ -47,24 +43,20 @@ test('should save a task for the "slug" project in the server', function() {
         // One task for the project:
         var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
-        var tmp = JSON.stringify(task);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/task/1",
             [200, { "Content-type": "application/json" },
-            tmp] 
+            JSON.stringify(task)] 
             );
 
         var taskrun = {"info": {"answer": "Value"}, "user_id": 1, "task_id": 1, "created": "2012-04-02T11:51:24.478663", "finish_time": "2012-04-02T11:51:24.478663", "calibration": null, "project_id": 1, "user_ip": null, "timeout": null, "id": 1};
-
-        var tmp = JSON.stringify(taskrun);
 
         // The endpoint for the FakeServer:
         server.respondWith(
             "POST", "/api/taskrun",
             [200, { "Content-type": "application/json" },
-            tmp]
+            JSON.stringify(taskrun)]
             );
 
         // Test the method submitTask( taskid, answer );
@@ -98,13 +90,11 @@ test('should get the userprogress using the "slug" project from the server', fun
 
         var progress = {'done': 10, 'total': 100};
 
-        var tmp = JSON.stringify(progress);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/slug/userprogress",
             [200, { "Content-type": "application/json" },
-            tmp] 
+            JSON.stringify(progress)] 
             );
 
         // Test the method newTask( projectname );
@@ -125,37 +115,31 @@ test('should get a new task for the "slug" project from the server', function() 
         // Two sample projects are created
         var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
-        var tmp = JSON.stringify(project);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
-            tmp] 
+            JSON.stringify(project)] 
             );
 
         // One task for the project:
         var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
-        var tmp = JSON.stringify(task);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
-            tmp]
+            JSON.stringify(task)]
             );
 
         // Second task for the project:
         var task2 = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0};
 
-        var tmp2 = JSON.stringify(task2);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
-            tmp2]
+            JSON.stringify(task2)]
             );
 
         // Test the method newTask( projectname );
@@ -187,48 +171,40 @@ test('should get the task specified in the url (server/project/projectName/task/
         // Two sample projects are created
         var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
-        var tmp = JSON.stringify(project);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
-            tmp] 
+            JSON.stringify(project)] 
             );
 
         // One task for the project:
         var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
-        var tmp = JSON.stringify(task);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
-            tmp]
+            JSON.stringify(task)]
             );
 
         // Second task for the project:
         var task2 = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0};
 
-        var tmp2 = JSON.stringify(task2);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
-            tmp2]
+            JSON.stringify(task2)]
             );
 
         var requestedTask = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0};
-
-        var tmp3 = JSON.stringify(requestedTask);
 
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/task/3",
             [200, { "Content-type": "application/json" },
-            tmp3]
+            JSON.stringify(requestedTask)]
             );
 
         // The first task must be the requested one with id=3, the second one with id=2
@@ -267,55 +243,45 @@ test('loads a different "next" task when requesting what would be returned as "n
         // Two sample projects are created
         var project = [{"info": {"task_presenter": "some HTML and JS" }, "time_limit": null, "description": "Question", "short_name": "slug", "created": "2012-04-02T11:31:24.400338", "owner_id": 1, "calibration_frac": null, "bolt_course_id": null, "time_estimate": null, "hidden": 0, "long_tasks": null, "id": 1, "name": "Application Name"}];
 
-        var tmp = JSON.stringify(project);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project?short_name=slug",
             [200, { "Content-type": "application/json" },
-            tmp] 
+            JSON.stringify(project)] 
             );
 
         // One task for the project:
         var task = {"info": {"variable": "value"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478663", "project_id": 1, "state": "0", "id": 1, "priority_0": 0.0};
 
-        var tmp = JSON.stringify(task);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=0",
             [200, { "Content-type": "application/json" },
-            tmp]
+            JSON.stringify(task)]
             );
 
         // Second task for the project:
         var task2 = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 2, "priority_0": 0.0};
 
-        var tmp2 = JSON.stringify(task2);
-
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=1",
             [200, { "Content-type": "application/json" },
-            tmp2]
+            JSON.stringify(task2)]
             );
-
-        // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/task/2",
             [200, { "Content-type": "application/json" },
-            tmp2]
+            JSON.stringify(task2)]
             );
 
         var requestedTask = {"info": {"variable": "value2"}, "quorum": null, "calibration": 0, "created": "2012-04-02T11:31:24.478664", "project_id": 1, "state": "0", "id": 3, "priority_0": 0.0};
-
-        var tmp3 = JSON.stringify(requestedTask);
 
         // The endpoint for the FakeServer:
         server.respondWith(
             "GET", "/api/project/1/newtask?offset=2",
             [200, { "Content-type": "application/json" },
-            tmp3]
+            JSON.stringify(requestedTask)]
             );
 
         // The first task must be the requested one with id=2, the second one with an id different than 2
