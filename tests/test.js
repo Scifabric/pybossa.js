@@ -318,17 +318,17 @@ test('loads a different "next" task when requesting what would be returned as "n
             tmp3]
             );
 
-        // The first task must be the requested one with id=2, the second one with an id different than 3
+        // The first task must be the requested one with id=2, the second one with an id different than 2
         var firstTask = true;
         pybossa.taskLoaded(function(task, deferred){
             if (firstTask) {
-                equal(task.id, 2, "Wrong task received");
+                equal(task.id, 2, "Expected 2, received "+task.id);
                 firstTask = false;
+                deferred.resolve(task);
             }
             else {
-                notEqual(task.id, 2, "Wrong task received");
+                notEqual(task.id, 2, "Expected 2, received "+task.id);
             }
-            deferred.resolve(task);
         });
 
         pybossa.presentTask(function(task, deferred){
