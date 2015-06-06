@@ -350,3 +350,14 @@ test('loads a different "next" task when requesting what would be returned as "n
         server.respond();
         expect(2);
 });
+
+module("pybossa.setEndpoint()");
+test("After setting the endpoint, AJAX calls are redirected to new domain", function() {
+    pybossa.setEndpoint('/pybossa');
+    this.spy(jQuery, "ajax");
+
+    pybossa.newTask('slug');
+
+    ok(jQuery.ajax.calledOnce);
+    equal(jQuery.ajax.getCall(0).args[0].url, "/pybossa/api/project");
+});
