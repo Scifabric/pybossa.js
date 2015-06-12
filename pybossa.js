@@ -121,7 +121,7 @@
         _presentTask = userFunc;
     }
 
-    function _resolveNextTaskLoaded(task, deferred) {
+    function _resolveNextTaskLoaded(deferred, task) {
         var udef = $.Deferred();
         _taskLoaded(task, udef);
         udef.done(function(task) {
@@ -141,12 +141,10 @@
                 xhr.done(function(task) {
                     if (previousTask && task.id === previousTask.id) {
                         var secondTry = _fetchNewTask(project.id, offset+1)
-                        .done(function(secondTask){
-                            _resolveNextTaskLoaded(secondTask, def);
-                        });
+                        .done(_resolveNextTaskLoaded.bind(this, def));
                     }
                     else {
-                        _resolveNextTaskLoaded(task, def);
+                        _resolveNextTaskLoaded(def, task);
                     }
                 });
                 return def.promise();
