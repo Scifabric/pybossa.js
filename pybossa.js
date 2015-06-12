@@ -154,14 +154,11 @@
 
             function loop(task) {
                 var nextLoaded = getNextTask(1, task),
-                taskSolved = $.Deferred(),
-                nextUrl;
+                taskSolved = $.Deferred();
                 if (task.id) {
+                    var nextUrl = '/project/' + projectname + '/task/' + task.id;
                     if (url != '/') {
-                        nextUrl = url + '/project/' + projectname + '/task/' + task.id;
-                    }
-                    else {
-                        nextUrl = '/project/' + projectname + '/task/' + task.id;
+                        nextUrl = url + nextUrl;
                     }
                     history.pushState({}, "Title", nextUrl);
                 }
