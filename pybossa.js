@@ -74,17 +74,11 @@
         return { question: project.description, task: task};
         }
 
-    function _addAnswerToTask(task, answer) {
-        task.answer = answer;
-        return task;
-    }
-
     function _createTaskRun(answer, task) {
-        task = _addAnswerToTask(task, answer);
         var taskrun = {
             'project_id': task.project_id,
             'task_id': task.id,
-            'info': task.answer
+            'info': answer
         };
         taskrun = JSON.stringify(taskrun);
         return _saveTaskRun(taskrun).then(function(data) {return data;});
