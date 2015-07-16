@@ -142,7 +142,15 @@
                 var taskId = _getCurrentTaskId(_window.location.pathname);
                 var xhr = (taskId && (previousTask === undefined)) ? _fetchTask(taskId) : _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
-                    _resolveNextTaskLoaded(task, def);
+                    if (previousTask && task.id === previousTask.id) {
+                        var secondTry = _fetchNewTask(project.id, offset+1)
+                        .done(function(secondTask){
+                            _resolveNextTaskLoaded(secondTask, def);
+                        });
+                    }
+                    else {
+                        _resolveNextTaskLoaded(task, def);
+                    }
                 });
                 return def.promise();
             }
