@@ -270,7 +270,7 @@ test('loads a different "next" task when requesting what would be returned as "n
             JSON.stringify(task2)]
             );
         server.respondWith(
-            "GET", "/api/task/2",
+            "GET", /^\/api\/task\/2(\?_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task2)]
             );
