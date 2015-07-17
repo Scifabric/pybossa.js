@@ -18,7 +18,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=0",
+            "GET", /^\/api\/project\/1\/newtask\?offset=0(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task)]
             );
@@ -45,7 +45,7 @@ test('should save a task for the "slug" project in the server', function() {
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/task/1",
+            "GET", /^\/api\/task\/1(\?_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task)] 
             );
@@ -92,7 +92,7 @@ test('should get the userprogress using the "slug" project from the server', fun
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/slug/userprogress",
+            "GET", /^\/api\/project\/slug\/userprogress(\?_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(progress)] 
             );
@@ -127,7 +127,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=0",
+            "GET", /^\/api\/project\/1\/newtask\?offset=0(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task)]
             );
@@ -137,7 +137,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=1",
+            "GET", /^\/api\/project\/1\/newtask\?offset=1(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task2)]
             );
@@ -183,7 +183,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=0",
+            "GET", /^\/api\/project\/1\/newtask\?offset=0(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task)]
             );
@@ -193,7 +193,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=1",
+            "GET", /^\/api\/project\/1\/newtask\?offset=1(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task2)]
             );
@@ -202,7 +202,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/task/3",
+            "GET", /^\/api\/task\/3(\?_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(requestedTask)]
             );
@@ -255,7 +255,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=0",
+            "GET", /^\/api\/project\/1\/newtask\?offset=0(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task)]
             );
@@ -265,12 +265,12 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=1",
+            "GET", /^\/api\/project\/1\/newtask\?offset=1(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task2)]
             );
         server.respondWith(
-            "GET", "/api/task/2",
+            "GET", /^\/api\/task\/2(\?_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(task2)]
             );
@@ -279,7 +279,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project/1/newtask?offset=2",
+            "GET", /^\/api\/project\/1\/newtask\?offset=2(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(requestedTask)]
             );

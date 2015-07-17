@@ -22,6 +22,7 @@
     function _userProgress(projectname) {
         return $.ajax({
             url: url + 'api/project/' + projectname + '/userprogress',
+            cache: false,
             dataType: 'json'
         });
     }
@@ -39,12 +40,14 @@
         return $.ajax({
             url: url + 'api/project/' + projectId + '/newtask',
             data: 'offset=' + offset,
+            cache: false,
             dataType: 'json'
         });
     }
     function _fetchTask(taskId) {
         return $.ajax({
             url: url + 'api/task/' + taskId,
+            cache: false,
             dataType: 'json'
         });
     }
