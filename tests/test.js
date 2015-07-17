@@ -279,7 +279,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", /\/api\/project\/1\/newtask\?offset=2(&_=\d+)?$/,
+            "GET", /^\/api\/project\/1\/newtask\?offset=2(&_=\d+)?$/,
             [200, { "Content-type": "application/json" },
             JSON.stringify(requestedTask)]
             );
