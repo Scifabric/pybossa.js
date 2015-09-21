@@ -38,7 +38,7 @@ And from this point, you can run the tests simply with:
 
 # Copyright
 
-Copyright 2013 SF Isle of Man
+Copyright 2015 [SciFabric LTD](http://scifabric.com).
 
 # License
 

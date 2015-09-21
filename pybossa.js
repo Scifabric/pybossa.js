@@ -1,5 +1,6 @@
 // pybossa.js library
-// Copyright (C) 2013 SF Isle of Man
+//
+// Copyright (C) 2015 SciFabric LTD.
 //
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
