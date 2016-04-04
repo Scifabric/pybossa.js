@@ -31,7 +31,7 @@
     function _fetchProject(projectname) {
         return $.ajax({
             url: url + 'api/project',
-            data: 'short_name='+projectname,
+            data: 'all=1&short_name='+projectname,
             dataType:'json'
         });
     }
