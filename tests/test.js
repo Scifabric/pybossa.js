@@ -8,7 +8,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project?short_name=slug",
+            "GET", "/api/project?all=1&short_name=slug",
             [200, { "Content-type": "application/json" },
             JSON.stringify(project)]
             );
@@ -117,7 +117,7 @@ test('should get a new task for the "slug" project from the server', function() 
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project?short_name=slug",
+            "GET", "/api/project?all=1&short_name=slug",
             [200, { "Content-type": "application/json" },
             JSON.stringify(project)] 
             );
@@ -173,7 +173,7 @@ test('should get the task specified in the url (server/project/projectName/task/
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project?short_name=slug",
+            "GET", "/api/project?all=1&short_name=slug",
             [200, { "Content-type": "application/json" },
             JSON.stringify(project)] 
             );
@@ -245,7 +245,7 @@ test('loads a different "next" task when requesting what would be returned as "n
 
         // The endpoint for the FakeServer:
         server.respondWith(
-            "GET", "/api/project?short_name=slug",
+            "GET", "/api/project?all=1&short_name=slug",
             [200, { "Content-type": "application/json" },
             JSON.stringify(project)] 
             );
