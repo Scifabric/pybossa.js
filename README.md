@@ -5,11 +5,14 @@
 PyBossa.JS is a simple JavaScript library that will allow you to create
 a PyBossa project using three methods:
 
-* pybossa.taskLoaded
-* pybossa.presentTask, and
+* pybossa.taskLoaded,
+* pybossa.presentTask, 
+* pybossa.saveTask, and
 * pybossa.run('your-slug-project-name')
 
 If you want to learn how to use the library, please, check the demo project and their documentation:
+
+**NOTE**: pybossa.saveTask can have a task object or a task.id. It's up to you.
 
 * [FlickrPerson for PyBossa](https://github.com/PyBossa/app-flickrperson) [[doc]](http://docs.pybossa.com/en/latest/user/create-application-tutorial.html)
 
