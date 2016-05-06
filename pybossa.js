@@ -183,7 +183,13 @@
     };
 
     pybossa.saveTask = function (taskId, answer) {
-        return _fetchTask(taskId).then(_createTaskRun.bind(undefined, answer));
+        if (typeof(taskId) === "number") {
+            return _fetchTask(taskId).then(_createTaskRun.bind(undefined, answer));
+        }
+        if (typeof(taskId) === "object") {
+            var task = taskId
+            return _createTaskRun(answer, task);
+        }
     };
 
     pybossa.getCurrentTaskId = function (url) {
