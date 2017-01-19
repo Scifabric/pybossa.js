@@ -1,6 +1,6 @@
 {
   "name": "pybossa.js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "JavaScript library to interact with a PyBossa server.",
   "main": "pybossa.js",
   "directories": {
