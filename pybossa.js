@@ -141,6 +141,9 @@
                 offset = offset || 0;
                 var def = $.Deferred();
                 var taskId = _getCurrentTaskId(_window.location.pathname);
+                if (typeof project === 'undefined' || !project) {
+                    console.log("Warning: project seems undefined. Did you run in your project pybossa.run('projectname'); with the right name?");
+                };
                 var xhr = (taskId && (previousTask === undefined)) ? _fetchTask(taskId) : _fetchNewTask(project.id, offset);
                 xhr.done(function(task) {
                     if (previousTask && task.id === previousTask.id) {
