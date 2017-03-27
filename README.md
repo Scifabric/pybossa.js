@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/PyBossa/pybossa.js.svg?branch=master)](https://travis-ci.org/PyBossa/pybossa.js)
+[![Build Status](https://travis-ci.org/Scifabric/pybossa.js.svg?branch=master)](https://travis-ci.org/Scifabric/pybossa.js)
 
 # PyBossa.JS: a JavaScript for PyBossa.
 
