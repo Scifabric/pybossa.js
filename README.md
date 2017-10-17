@@ -14,7 +14,7 @@ If you want to learn how to use the library, please, check the demo project and 
 
 **NOTE**: pybossa.saveTask can have a task object or a task.id. It's up to you.
 
-* [FlickrPerson for PyBossa](https://github.com/PyBossa/app-flickrperson) [[doc]](http://docs.pybossa.com/en/latest/user/create-application-tutorial.html)
+* [FlickrPerson for PyBossa](https://github.com/PyBossa/app-flickrperson) [[doc]](http://docs.pybossa.com/user/tutorial/)
 
 If you want more details, check the [documentation](http://pybossajs.rtfd.org).
 
