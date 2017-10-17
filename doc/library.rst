@@ -265,7 +265,7 @@ has been successfully saved:
     };
   );
 
-We recommend to read the `PyBossa tutorial <http://docs.pybossa.com/en/latest/user/create-application-tutorial.html>`_ as we explain step by step how to create a project.
+We recommend to read the `PyBossa tutorial <http://docs.pybossa.com/user/tutorial/>`_ as we explain step by step how to create a project.
 
 4. Setting a different end point
 --------------------------------
